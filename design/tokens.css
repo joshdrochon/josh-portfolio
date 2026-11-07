@@ -1,0 +1,173 @@
+/*
+ * Design tokens — the ONLY place raw style values may appear.
+ * Source of truth for colors, type, spacing, radii, shadows, motion, sizes.
+ * Rules: docs/STYLE_GUIDE.md. Values were extracted from the approved mockup
+ * (mockup/project/Main.dc.html) and normalized to one scale on 2026-11-06.
+ *
+ * Theme behavior and the toggle: docs/STYLE_GUIDE.md §6. Terminal surfaces
+ * (--term-*) are dark in BOTH themes on purpose.
+ * Tailwind mapping: docs/STYLE_GUIDE.md §5. Timing constants used by JS live
+ * in src/lib/motion.ts, not here; only CSS-driven motion is tokenized below.
+ */
+
+:root {
+  /* ---------- Page (theme-dependent) ---------- */
+  --color-bg:            #FFFFFF;  /* page background */
+  --color-surface:       #FFFFFF;  /* card body */
+  --color-text:          #111111;  /* headings, primary text */
+  --color-text-muted:    #4B5563;  /* body copy, captions, tags (7.6:1 on white) */
+  --color-text-strong:   #1F2937;  /* button labels */
+  --color-border:        #E5E7EB;  /* card outline, dividers */
+  --color-border-strong: #D1D5DB;  /* tag pill outline, sound toggles */
+  --color-control:       #9CA3AF;  /* secondary button outline */
+  --color-accent:        #15803D;  /* the `$` in the hero prompt (5.0:1 on white) */
+  --color-primary-bg:    #111111;  /* filled "Play now" button */
+  --color-primary-fg:    #FFFFFF;
+  --color-photo-ring:    rgba(0, 0, 0, 0.15);
+  --color-scrim:         rgba(17, 17, 17, 0.55); /* dialog backdrop */
+  --color-focus:         #2563EB;  /* focus ring on page surfaces (5.2:1 on white) */
+  --color-window-outline: #2A2B3D;  /* terminal window/card-header outline; lighter in dark theme so dark-on-dark windows stay visible (16161E on 1A1B26 is only 1.05:1) */
+
+  /* ---------- Terminal (same in both themes; Tokyo Night) ---------- */
+  --term-bg:        #16161E;  /* window body, card headers */
+  --term-chrome:    #1F2030;  /* title bar */
+  --term-border:    #2A2B3D;
+  --term-text:      #C0CAF5;
+  --term-bright:    #FFFFFF;  /* org names, man-page headings, window labels */
+  --term-muted:     #A9B1D6;  /* captions, commands */
+  --term-dim:       #8089B3;  /* hollow cursor outline */
+  --term-faint:     #565F89;  /* outline buttons on dark */
+  --term-redact:    #3B3F5C;  /* redaction bars */
+  --term-green:     #9ECE6A;  /* success, user name, big numbers */
+  --term-blue:      #7AA2F7;  /* path, links, roles */
+  --term-amber:     #E0AF68;  /* directories, dates, stack line */
+  --term-red:       #F7768E;  /* "before" numbers, errors */
+  --term-purple:    #BB9AF7;  /* pre-Aim commits */
+  --term-dot-close: #FF5F57;
+  --term-dot-min:   #FEBC2E;
+  --term-dot-max:   #28C840;
+  --term-focus:     var(--term-blue); /* focus ring inside terminal surfaces (7.1:1) */
+
+  /* ---------- Type ---------- */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace; /* headings, labels, UI, terminal */
+  --font-sans: 'Inter', system-ui, sans-serif;            /* body paragraphs only */
+  --weight-regular: 400;
+  --weight-bold:    700;
+
+  --text-2xs: 11px;   /* tag pills, title-bar titles, tile labels */
+  --text-xs:  12px;   /* captions, buttons, status bar */
+  --text-sm:  13px;   /* terminal body, mono meta lines, hero prompt + whoami (mockup 12.5/13/13.5/14 → 13) */
+  --text-md:  14px;   /* body copy incl. man-page paragraphs (mockup 14/14.5 → 14) */
+  --text-lg:  18px;   /* man-page tile values */
+  --text-xl:  20px;   /* card titles, window labels, the name h1 (mockup name 22 → 20) */
+  --text-metric: 30px; /* big number in card headers (was 28/30 → 30) */
+  --text-h2:  clamp(28px, 4cqw, 40px);   /* section headings */
+  --text-display: clamp(28px, 6cqw, 72px); /* hero title */
+
+  --leading-tight: 1.2;   /* titles */
+  --leading-body:  1.55;  /* body copy */
+  --leading-term:  1.65;  /* terminal text */
+  --tracking-tight: -0.5px; /* section headings, display (display uses -1px: one-off) */
+  --tracking-label: 1px;    /* window labels */
+
+  /* ---------- Space (4px grid; 2px only for hairline gaps) ---------- */
+  --space-0_5: 2px;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  28px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-18: 72px;   /* section bottom padding, all sections (mockup case studies 80 → 72) */
+  --space-22: 88px;   /* hero top padding */
+
+  /* ---------- Radius ---------- */
+  --radius-hair:   2px;    /* redaction bars */
+  --radius-tile:   6px;    /* man-page tiles, inline terminal blocks */
+  --radius-card:   8px;    /* project & case-study cards */
+  --radius-window: 10px;   /* terminal windows, dialog */
+  --radius-pill:   999px;  /* tags, buttons, toggles */
+  --radius-round:  50%;    /* photo, window dots, graph dots */
+
+  /* ---------- Shadow ---------- */
+  --shadow-window:       3px 6px 18px rgba(0, 0, 0, 0.22);
+  --shadow-window-hover: 6px 14px 32px rgba(0, 0, 0, 0.28);
+  --shadow-dialog:       0 24px 60px rgba(0, 0, 0, 0.45);
+  --shadow-photo:        0 4px 12px var(--color-photo-ring);
+
+  /* ---------- Sizes ---------- */
+  --size-touch:       44px;   /* minimum hit target */
+  --size-dot:         11px;   /* title-bar dots */
+  --size-graph-dot:   12px;
+  --size-cursor-w:    0.56em; /* block cursor scales with its text (mockup 7×14 at 12.5px, 8×16 at 14px) */
+  --size-cursor-h:    1.12em;
+  --size-focus-ring:  2px;    /* outline width; offset is the same value */
+  --size-window-h:    236px;
+  --size-window-label: 52px;
+  --size-card-header: 180px;
+  --size-case-header: 150px;
+  --size-photo: clamp(180px, 22cqw, 288px);
+  --width-content: 1240px;  /* projects, experience, case studies */
+  --width-card:    380px;   /* max card width; lazy-load placeholder width */
+  --width-row:     1280px;  /* terminal row */
+  --width-reading: 920px;   /* experience window, footer */
+  --width-dialog:  860px;
+
+  /* ---------- Motion ---------- */
+  --duration-fast: 200ms;  /* hover lift */
+  --duration-blink: 530ms; /* cursor */
+  --ease: ease;
+  --lift-hover: -6px;      /* translateY on hover */
+
+  /* ---------- Layers ---------- */
+  --z-toggles: 10;
+  --z-statusbar: 40;
+  --z-dialog: 50;
+}
+
+/* ---------- Dark theme: system preference unless the visitor picked light ----------
+ * The two dark blocks below MUST hold identical declarations (CSS can't share
+ * them between a media query and an attribute selector). `lint:tokens` fails
+ * if they differ. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg:            #1A1B26;
+    --color-surface:       #1F2030;
+    --color-text:          #C0CAF5;
+    --color-text-muted:    #A9B1D6;
+    --color-text-strong:   #C0CAF5;
+    --color-border:        #2A2B3D;
+    --color-border-strong: #3B3F5C;
+    --color-control:       #565F89;
+    --color-accent:        #9ECE6A;
+    --color-primary-bg:    #C0CAF5;
+    --color-primary-fg:    #16161E;
+    --color-photo-ring:    rgba(0, 0, 0, 0.5);
+    --color-window-outline: #3B3F5C;
+    --color-focus:          #7AA2F7;
+  }
+}
+:root[data-theme="dark"] {
+  --color-bg:            #1A1B26;
+  --color-surface:       #1F2030;
+  --color-text:          #C0CAF5;
+  --color-text-muted:    #A9B1D6;
+  --color-text-strong:   #C0CAF5;
+  --color-border:        #2A2B3D;
+  --color-border-strong: #3B3F5C;
+  --color-control:       #565F89;
+  --color-accent:        #9ECE6A;
+  --color-primary-bg:    #C0CAF5;
+  --color-primary-fg:    #16161E;
+  --color-photo-ring:    rgba(0, 0, 0, 0.5);
+  --color-window-outline: #3B3F5C;
+  --color-focus:          #7AA2F7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --duration-fast: 0ms; --lift-hover: 0px; }
+}
