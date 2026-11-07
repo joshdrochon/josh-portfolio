@@ -47,7 +47,7 @@ Same page layout as Joan's site, re-themed as a developer's terminal.
 ### 3.1 Sound controls (top right)
 Two pill buttons, both **on by default** (D72): `clicks: on/off` and `music: on/off`, with `aria-pressed`. Browsers block audio until the visitor clicks, taps or presses a key, so nothing loads or plays before that first interaction; then the clicks load and the music fades in. Either pill turns its sound off.
 - Clicks: a soft key click per typed character. Quiet (about 0.15 gain).
-- Music: a quiet lo-fi loop.
+- Music: a quiet lo-fi loop. It mutes while the tab is hidden (a link opened in a new tab, another tab, a minimized window) and fades back in on return, so it never plays over KeyBlaster's own music (D83).
 - Both come from **ElevenLabs** (sound effects + music). The mockup uses browser-made stand-ins (noise-burst clicks, a 4-note chord) that must not ship.
 - Clicks use 3–4 sampled switch clicks picked at random, plus a distinct "thock" for space and enter, and play only while typing.
 - Choices are not remembered: both off on every load (D38).

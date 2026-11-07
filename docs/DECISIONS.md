@@ -98,3 +98,5 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D80 | 2026-11-06 | `--width-content` = 1280px, the terminal row width, so project and case-study edges line up with the four windows | Josh |
 | D81 | 2026-11-06 | Whiteout Ultima stays, but without its Play link (the game is unpolished); its card shows only Read more | Josh |
 | D82 | 2026-11-06 | About gets personal: About window lines and an OFF THE CLOCK section (Howl, snowboarding at Stevens Pass, retro games, reading/writing/travel, movies, light rail), all from Josh on 2026-11-06; STACK and the AI-tools line dropped from About | Josh: feedback that About was too technical |
+| D83 | 2026-11-07 | Music mutes while the tab is hidden (`visibilitychange`) and fades back in on return; key clicks unchanged | Josh: music kept playing under KeyBlaster's |
+| D84 | 2026-11-07 | About page drops HOW I WORK (read as written for one job posting) | Josh |

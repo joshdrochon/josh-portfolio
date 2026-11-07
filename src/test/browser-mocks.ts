@@ -32,7 +32,8 @@ export class MockIO {
 }
 window.IntersectionObserver = MockIO as unknown as typeof IntersectionObserver;
 
-export const audio = { created: 0, resumed: 0, started: 0, stopped: 0 };
+type MockParam = { value: number; linearRampToValueAtTime: ReturnType<typeof vi.fn>; setValueAtTime: ReturnType<typeof vi.fn>; cancelScheduledValues: ReturnType<typeof vi.fn> };
+export const audio = { created: 0, resumed: 0, started: 0, stopped: 0, gains: [] as MockParam[] };
 class MockAudioContext {
   currentTime = 0;
   state = "suspended";
@@ -40,7 +41,11 @@ class MockAudioContext {
   constructor() { audio.created++; }
   resume() { audio.resumed++; this.state = "running"; return Promise.resolve(); }
   decodeAudioData() { return Promise.resolve({}); }
-  createGain() { return { gain: { value: 0, linearRampToValueAtTime: vi.fn() }, connect: vi.fn() }; }
+  createGain() {
+    const gain = { value: 0, linearRampToValueAtTime: vi.fn(), setValueAtTime: vi.fn(), cancelScheduledValues: vi.fn() };
+    audio.gains.push(gain);
+    return { gain, connect: vi.fn() };
+  }
   createBufferSource() {
     return { buffer: null, loop: false, connect: vi.fn(), start: () => audio.started++, stop: () => audio.stopped++ };
   }

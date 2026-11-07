@@ -77,8 +77,23 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     loading.current = false;
     if (!want.current.music || loop.current) return; // turned off while the file loaded
     loop.current = play(MUSIC, 0, true);
-    loop.current.gain.gain.linearRampToValueAtTime(MUSIC_GAIN, audio().currentTime + FADE_S);
+    if (!document.hidden) loop.current.gain.gain.linearRampToValueAtTime(MUSIC_GAIN, audio().currentTime + FADE_S);
   }, [audio, load, play]);
+
+  // Music goes quiet while this tab is hidden (a link opened in a new tab, e.g. KeyBlaster with its own
+  // music, or another tab) and fades back in on return. Key clicks only play while typing, so they need nothing (D83).
+  useEffect(() => {
+    const onVisibility = () => {
+      const ac = ctx.current;
+      const gain = loop.current?.gain.gain;
+      if (!ac || !gain) return;
+      gain.cancelScheduledValues(ac.currentTime);
+      gain.setValueAtTime(document.hidden ? 0 : gain.value, ac.currentTime);
+      if (!document.hidden) gain.linearRampToValueAtTime(MUSIC_GAIN, ac.currentTime + FADE_S);
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
 
   const loadClicks = useCallback(() => load([...KEYS, THOCK]), [load]);
 

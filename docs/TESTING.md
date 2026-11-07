@@ -77,6 +77,7 @@ Names match `docs/COMPONENTS.md`. Unit tests live in `__tests__/` next to the co
   - Turning a sound off before the first click keeps it silent.
   - `playKey()` does nothing while clicks are off.
   - Music stops and starts again from its pill.
+  - Music mutes when the tab is hidden and fades back in when it is visible again (D83).
 - **Theme helper** (`lib/theme.ts`)
   - Saved choice, else OS preference.
   - `setTheme` sets `data-theme` and saves it.
