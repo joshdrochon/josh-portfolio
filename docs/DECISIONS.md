@@ -91,3 +91,4 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D73 | 2026-11-06 | Lazy cards mount only when they reach the screen (was 200px early) and fade in | Josh |
 | D74 | 2026-11-06 | Every link that isn't an in-page `#` link opens in a new tab, including `/resume.pdf` (edits the locked Button) | Josh: resume should open a new tab |
 | D75 | 2026-11-06 | All buttons show the hand cursor; `#` links scroll smoothly (instant under reduced motion) | Josh |
+| D76 | 2026-11-06 | Pill buttons rise 2px, brighten their outline and cast a soft shadow on hover, and dip on press; off under reduced motion (edits the locked Button and TogglePill) | Josh: "something subtle" |

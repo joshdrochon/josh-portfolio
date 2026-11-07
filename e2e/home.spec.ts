@@ -54,3 +54,12 @@ test("everything clickable shows the hand cursor (D75)", async ({ page }) => {
   const cursors = await page.locator("a[href], button").evaluateAll((els) => els.map((e) => `${getComputedStyle(e).cursor} ${e.textContent?.trim().slice(0, 30)}`));
   expect(cursors.filter((c) => !c.startsWith("pointer"))).toEqual([]);
 });
+
+test("pill buttons rise on hover (D76)", async ({ page }) => {
+  await page.goto("/");
+  const pill = page.getByRole("button", { name: /clicks:/ });
+  const transform = () => pill.evaluate((e) => getComputedStyle(e).transform);
+  expect(await transform()).toBe("none");
+  await pill.hover();
+  await expect.poll(transform).not.toBe("none");
+});

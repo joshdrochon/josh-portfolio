@@ -29,7 +29,7 @@ export function TogglePill({ pressed, onToggle, icon, label, ariaLabel }: Props)
       onClick={onToggle}
       aria-pressed={pressed ?? undefined}
       aria-label={ariaLabel}
-      className="inline-flex min-h-touch min-w-touch items-center justify-center gap-2 rounded-pill border border-border-strong bg-bg px-4 font-mono text-xs text-text"
+      className="pill-hover inline-flex min-h-touch min-w-touch items-center justify-center gap-2 rounded-pill border border-border-strong bg-bg px-4 font-mono text-xs text-text"
     >
       {ICONS[icon]}
       {label && <span>{label}</span>}

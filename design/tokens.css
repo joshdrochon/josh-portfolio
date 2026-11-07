@@ -98,6 +98,7 @@
   --shadow-window-hover: 6px 14px 32px rgba(0, 0, 0, 0.28);
   --shadow-dialog:       0 24px 60px rgba(0, 0, 0, 0.45);
   --shadow-photo:        0 4px 12px var(--color-photo-ring);
+  --shadow-button-hover: 0 4px 10px rgba(0, 0, 0, 0.25); /* pill buttons on hover (D76) */
   --shadow-cursor-hollow: inset 0 0 0 1px var(--term-dim); /* unfocused-terminal cursor outline */
   --shadow-photo-glow:   0 0 0 2px rgba(158, 206, 106, 0.35), 0 0 28px rgba(158, 206, 106, 0.35), 0 4px 12px var(--color-photo-ring); /* hero photo CRT glow (term green) */
 
@@ -131,6 +132,8 @@
   --ease: ease;
   --lift-hover: -6px;      /* translateY on hover */
   --lift-reveal: 16px;     /* lazy cards rise this far as they fade in */
+  --lift-button: -2px;     /* pill buttons rise this far on hover (D76) */
+  --scale-press: 0.97;     /* pill buttons shrink this much while pressed */
 
   /* ---------- Layers ---------- */
   --z-toggles: 10;
@@ -178,5 +181,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root { --duration-fast: 0ms; --duration-slow: 0ms; --lift-hover: 0px; --lift-reveal: 0px; }
+  :root { --duration-fast: 0ms; --duration-slow: 0ms; --lift-hover: 0px; --lift-reveal: 0px; --lift-button: 0px; --scale-press: 1; }
 }
