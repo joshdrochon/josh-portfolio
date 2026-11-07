@@ -49,8 +49,8 @@
   --term-focus:     var(--term-blue); /* focus ring inside terminal surfaces (7.1:1) */
 
   /* ---------- Type ---------- */
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace; /* headings, labels, UI, terminal */
-  --font-sans: 'Inter', system-ui, sans-serif;            /* body paragraphs only */
+  --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace; /* headings, labels, UI, terminal */
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;            /* body paragraphs only */
   --weight-regular: 400;
   --weight-bold:    700;
 

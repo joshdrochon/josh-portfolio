@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run lint:tokens
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run dupes
+      - run: npm run unused
+      - run: npm run check:components
+      - run: npm run build
+      - run: npm run size
+      - run: npm run loc
+      - uses: actions/upload-artifact@v4
+        with: { name: next-build, path: .next, include-hidden-files: true, retention-days: 1 }
+
+  pr-rules:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - run: npm run check:locked
+        env: { PR_BODY: "${{ github.event.pull_request.body }}", BASE_REF: "origin/${{ github.base_ref }}" }
+      - run: npm run check:scope
+        env: { PR_TITLE: "${{ github.event.pull_request.title }}", BASE_REF: "origin/${{ github.base_ref }}" }
+
+  e2e:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: next-build, path: .next }
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - run: npx --yes @lhci/cli@0.14.0 autorun
