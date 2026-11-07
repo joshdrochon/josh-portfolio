@@ -84,11 +84,11 @@ export const projects: Project[] = [
     "card": {
       "cmd": "$ python eval.py --adapter josh",
       "stat": {
-        "from": "23.3%",
-        "to": "18.9%",
-        "source": "silentflow/EXPERIMENTS.md:16"
+        "from": "22.61%",
+        "to": "17.48%",
+        "source": "silentflow/EXPERIMENTS.md:372"
       },
-      "caption": "word error rate · p = 0.014",
+      "caption": "word error rate · with LLM re-ranking",
       "tags": [
         "#1 capstone",
         "Python",
@@ -96,7 +96,7 @@ export const projects: Project[] = [
         "LoRA",
         "FastAPI"
       ],
-      "desc": "Reads words mouthed silently at a webcam and turns them into text. A 0.4 MB personal adapter, trained on under 3 minutes of my own video, cut word errors by about a fifth. My Gauntlet AI capstone, voted #1 by the cohort and staff."
+      "desc": "Reads words mouthed silently at a webcam and turns them into text. A 0.4 MB personal adapter, trained on under 3 minutes of my own video, cut word errors by more than a fifth. My Gauntlet AI capstone, voted #1 by the cohort and staff."
     },
     "links": [],
     "man": {
@@ -105,13 +105,13 @@ export const projects: Project[] = [
       "tiles": [
         {
           "k": "word error rate",
-          "v": "23.3% → 18.9%",
-          "source": "silentflow/EXPERIMENTS.md:16"
+          "v": "22.61% → 17.48%",
+          "source": "silentflow/EXPERIMENTS.md:372"
         },
         {
           "k": "perfect transcripts",
-          "v": "31.9% → 44.9%",
-          "source": "silentflow/EXPERIMENTS.md:16"
+          "v": "37.7% → 49.3%",
+          "source": "silentflow/EXPERIMENTS.md:372"
         },
         {
           "k": "adapter size per user",
@@ -129,7 +129,7 @@ export const projects: Project[] = [
           "title": "DESCRIPTION",
           "paras": [
             "A research prototype built on a pretrained lip-reading model. Generic lip reading varies a lot between speakers: one model's error rate ranged 2.8× across speakers. The bet was that a small adapter tuned to one person closes that gap.",
-            "I trained a LoRA adapter on under 3 minutes of my own video and tested it on 69 held-out clips (p = 0.014)."
+            "I trained a LoRA adapter on under 3 minutes of my own video and tested it on 69 held-out clips. With LLM re-ranking it cut word errors from 22.61% to 17.48%; the adapter alone took them from 23.30% to 18.86% (p = 0.014)."
           ]
         },
         {
