@@ -830,13 +830,6 @@ export const aboutPage: ManPageData = {
         "Movies. The latest one I loved was Wildwood.",
         "A sucker for the light rail."
       ]
-    },
-    {
-      "title": "HOW I WORK",
-      "bullets": [
-        "Measure before and after, and report the lower number when a re-measure disagrees.",
-        "Mentor the next engineer and write the runbook."
-      ]
     }
   ],
   "slug": "josh",

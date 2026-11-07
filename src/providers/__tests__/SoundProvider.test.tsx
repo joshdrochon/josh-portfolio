@@ -8,7 +8,7 @@ const wrapper = ({ children }: { children: ReactNode }) => <SoundProvider>{child
 const fetchMock = vi.fn(async () => ({ arrayBuffer: async () => new ArrayBuffer(8) }));
 
 beforeEach(() => {
-  Object.assign(audio, { created: 0, resumed: 0, started: 0, stopped: 0 });
+  Object.assign(audio, { created: 0, resumed: 0, started: 0, stopped: 0, gains: [] });
   fetchMock.mockClear();
   vi.stubGlobal("fetch", fetchMock);
   localStorage.clear();
@@ -70,5 +70,20 @@ describe("SoundProvider", () => {
     await act(async () => result.current.toggleMusic());
     expect(result.current.music).toBe(true);
     expect(audio.started).toBe(2);
+  });
+
+  it("mutes the music while the tab is hidden and fades it back in on return (D83)", async () => {
+    renderHook(() => useSound(), { wrapper });
+    await firstClick();
+    const music = audio.gains.at(-1)!;
+    const setHidden = (hidden: boolean) => {
+      Object.defineProperty(document, "hidden", { value: hidden, configurable: true });
+      act(() => void document.dispatchEvent(new Event("visibilitychange")));
+    };
+    setHidden(true);
+    expect(music.setValueAtTime).toHaveBeenLastCalledWith(0, expect.any(Number));
+    music.linearRampToValueAtTime.mockClear();
+    setHidden(false);
+    expect(music.linearRampToValueAtTime).toHaveBeenCalledWith(0.05, expect.any(Number));
   });
 });
