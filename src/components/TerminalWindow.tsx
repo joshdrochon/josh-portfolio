@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { PointerEvent } from "react";
+import type { FocusEvent, PointerEvent } from "react";
 import type { TerminalWindowConfig } from "@/data/types";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { useSound } from "@/providers/SoundProvider";
@@ -9,6 +9,7 @@ import { ShellSession } from "./ShellSession";
 import { Window } from "./Window";
 
 const isMouse = (e: { pointerType: string }) => e.pointerType === "mouse";
+const onControl = (t: EventTarget) => t instanceof Element && t.closest("a, button") !== null;
 
 // One of the four top windows. Shows its finished output, and types only while hovered (or tapped, on touch):
 // leaving pauses it mid-line, coming back picks up where it stopped (D69).
@@ -18,10 +19,11 @@ export function TerminalWindow({ config }: { config: TerminalWindowConfig }) {
   const { playKey } = useSound();
   const { start, pause, resume, ...view } = useTypewriter({ cmd: config.cmd, lineCount: config.lines.length, onChar: playKey });
 
-  const on = () => {
+  // Restarting would unmount the link under the visitor's finger or focus, so a link or button only resumes.
+  const on = (target?: EventTarget) => {
     setActive(true);
     if (view.typing) resume();
-    else start("hover");
+    else if (!(target && onControl(target))) start();
   };
   const off = useCallback(() => {
     setActive(false);
@@ -37,14 +39,16 @@ export function TerminalWindow({ config }: { config: TerminalWindowConfig }) {
   }, [active, off]);
 
   const mouse = (fn: () => void) => (e: PointerEvent) => isMouse(e) && fn();
+  // Focus moving between links inside the window is not entering or leaving it.
+  const crossing = (fn: (t: EventTarget) => void) => (e: FocusEvent) => !e.currentTarget.contains(e.relatedTarget) && fn(e.target);
   return (
     <div
       ref={ref}
       onPointerEnter={mouse(on)}
       onPointerLeave={mouse(off)}
-      onPointerDown={(e) => !isMouse(e) && on()}
-      onFocus={on}
-      onBlur={off}
+      onPointerDown={(e) => !isMouse(e) && on(e.target)}
+      onFocus={crossing(on)}
+      onBlur={crossing(off)}
     >
       <Window
         title={config.title}

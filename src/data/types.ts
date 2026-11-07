@@ -25,7 +25,7 @@ export type ManPageData = {
   meta: string;
   tiles: { k: string; v: string; source: string }[];
   sections: ManSection[];
-  seeAlso?: { label: string; href: string }[];
+  seeAlso?: Action[];
 };
 
 // The terminal-header card shape shared by projects and case studies.

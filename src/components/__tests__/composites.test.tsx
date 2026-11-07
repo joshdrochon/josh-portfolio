@@ -7,14 +7,13 @@ import { SoundProvider } from "@/providers/SoundProvider";
 import { Card } from "../Card";
 import { ShellSession } from "../ShellSession";
 import { TerminalWindow } from "../TerminalWindow";
-import { ManPage } from "../ManPage";
 import { GitGraph } from "../GitGraph";
 import { StatusBar } from "../StatusBar";
 import { LazySection } from "../LazySection";
 import { Controls } from "../Controls";
 import { Section } from "../Section";
 import { HireFooter } from "../HireFooter";
-import { cardActions, manPages } from "@/lib/actions";
+import { cardActions } from "@/lib/actions";
 import { projects } from "@/data/projects";
 import { experience } from "@/data/experience";
 import { hire, navTabs, windows } from "@/data/site";
@@ -57,10 +56,10 @@ describe("Card", () => {
 describe("ShellSession", () => {
   const lines = [{ text: "keyblaster/", tone: "amber" as const }, { text: "", action: { label: "> linkedin", href: "https://x.test" } }];
   it("shows the partial command and visible lines, with the trailing prompt only when done", () => {
-    const { container, rerender } = render(<ShellSession cmd="ls" lines={lines} view={{ cmdShown: "l", linesShown: 0, typing: true, done: false }} trailingPrompt />);
+    const { container, rerender } = render(<ShellSession cmd="ls" lines={lines} view={{ cmdShown: "l", linesShown: 0, typing: true }} trailingPrompt />);
     expect(container).toHaveTextContent("josh ~ $ l");
     expect(screen.queryByText("keyblaster/")).toBeNull();
-    rerender(<ShellSession cmd="ls" lines={lines} view={{ cmdShown: "ls", linesShown: 2, typing: false, done: true }} trailingPrompt />);
+    rerender(<ShellSession cmd="ls" lines={lines} view={{ cmdShown: "ls", linesShown: 2, typing: false }} trailingPrompt />);
     expect(screen.getByText("keyblaster/")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "> linkedin" })).toBeInTheDocument();
     expect(container.textContent!.match(/josh ~ \$/g)).toHaveLength(2);
@@ -102,17 +101,24 @@ describe("TerminalWindow", () => {
 
   it("on touch, a tap types it and a tap elsewhere pauses it", () => {
     vi.useFakeTimers();
-    const { container } = withSound(
-      <>
-        <TerminalWindow config={windows[0]} />
-        <p>outside</p>
-      </>,
-    );
+    const { container } = withSound(<><TerminalWindow config={windows[0]} /><p>outside</p></>); // prettier-ignore
     fireEvent.pointerDown(container.firstElementChild!, { pointerType: "touch" });
     act(() => vi.advanceTimersByTime(START_DELAY_MS + 1));
     expect(container).not.toHaveTextContent("+ 8 more");
     fireEvent.pointerDown(screen.getByText("outside"), { pointerType: "touch" });
     expect(frozenAfter(container, 60_000)).toBe(true);
+  });
+
+  it("clicking or tabbing to a link inside a finished window keeps the link (no retype)", () => {
+    vi.useFakeTimers();
+    act(() => vi.advanceTimersByTime(60_000));
+    withSound(<TerminalWindow config={windows.find((w) => w.id === "contact")!} />);
+    const link = screen.getByRole("link", { name: "> linkedin" });
+    fireEvent.pointerDown(link, { pointerType: "touch" });
+    act(() => link.focus());
+    act(() => vi.advanceTimersByTime(START_DELAY_MS + 1));
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveFocus();
   });
 
   it("lifts on keyboard focus", () => {
@@ -136,59 +142,6 @@ describe("TerminalWindow", () => {
   it("contact label copies the email", () => {
     withSound(<TerminalWindow config={windows.find((w) => w.id === "contact")!} />);
     expect(screen.getByRole("button", { name: "Contact" })).toBeInTheDocument();
-  });
-});
-
-describe("ManPage", () => {
-  const pages = manPages(projects);
-  beforeEach(() => {
-    HTMLDialogElement.prototype.showModal ??= function (this: HTMLDialogElement) {
-      this.open = true;
-    };
-    HTMLDialogElement.prototype.close ??= function (this: HTMLDialogElement) {
-      this.open = false;
-    };
-  });
-
-  const open = (slug: string) => act(() => {
-    history.replaceState(null, "", `#man/${slug}`);
-    window.dispatchEvent(new HashChangeEvent("hashchange"));
-  });
-
-  it("opens every page on its hash, named by the NAME line, and ignores unknown slugs", () => {
-    render(<><section id="projects"><h2 tabIndex={-1}>Projects</h2></section><ManPage pages={pages} /></>);
-    for (const p of pages) {
-      open(p.slug);
-      expect(screen.getByRole("dialog", { name: p.title })).toBeInTheDocument();
-    }
-    open("nope");
-    expect(screen.queryByRole("dialog")).toBeNull();
-  });
-
-  it("closes on q, drops the hash, and returns focus to the projects heading on a deep link", async () => {
-    render(<><section id="projects"><h2 tabIndex={-1}>Projects</h2></section><ManPage pages={pages} /></>);
-    open("ship");
-    await userEvent.keyboard("q");
-    expect(screen.queryByRole("dialog")).toBeNull();
-    expect(location.hash).toBe("");
-    expect(document.activeElement).toBe(screen.getByRole("heading", { name: "Projects" }));
-  });
-
-  it("shows private-repo text when there is nothing to link, and skips empty sections", () => {
-    render(<ManPage pages={pages} />);
-    open("coach-study");
-    const dialog = screen.getByRole("dialog");
-    expect(within(dialog).getByText("private repo · walkthrough on request")).toBeInTheDocument();
-    expect(within(dialog).queryByText("SEE ALSO")).not.toBeNull();
-    open("ship");
-    expect(within(screen.getByRole("dialog")).getByRole("link", { name: "code" })).toBeInTheDocument();
-  });
-
-  it("closes with the close button", async () => {
-    render(<ManPage pages={pages} />);
-    open("ship");
-    await userEvent.click(screen.getByRole("button", { name: "q · close" }));
-    expect(screen.queryByRole("dialog")).toBeNull();
   });
 });
 

@@ -23,7 +23,7 @@ export function ShellSession({ cmd, lines, view, trailingPrompt, activeCursor }:
       <div>
         <span className="sr-only">{cmd}</span>
         <span aria-hidden="true">
-          <Prompt cursor={view.done ? undefined : "typing"}>{view.cmdShown}</Prompt>
+          <Prompt cursor={view.typing ? "typing" : undefined}>{view.cmdShown}</Prompt>
         </span>
       </div>
       {lines.slice(0, view.linesShown).map((l, i) =>
@@ -37,7 +37,7 @@ export function ShellSession({ cmd, lines, view, trailingPrompt, activeCursor }:
           </div>
         ),
       )}
-      {view.done && trailingPrompt && <Prompt cursor={idle} />}
+      {!view.typing && trailingPrompt && <Prompt cursor={idle} />}
     </div>
   );
 }

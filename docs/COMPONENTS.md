@@ -40,7 +40,7 @@ All values come from `design/tokens.css`; the rules are in `docs/STYLE_GUIDE.md`
 | 14 | `StatusBar` | composite | tmux bar | `{ tabs: NavTab[] }`; `<nav aria-label="Site sections">`, `position: sticky; bottom: 0`; tabs ≥44px (D32); sound text is plain text (D39) | C | `--term-bg`, `--term-border`, `--term-muted`, `--term-green` |
 | 15 | `LazySection` | composite | last 5 project cards | `{ placeholder: ReactNode; className?: string; children: ReactNode }`; visual deferral only, data still ships with the page (D36) | C | `--width-card` |
 | 16 | `Controls` | composite | top-right cluster | none; composes 3× `TogglePill` from `useSound` and `useTheme()` (theme pill: label "Dark mode") | C | — |
-| 17 | `Section` | section | Projects, Experience, Case Studies | `{ id: string; title: string; subtitle?: string; width?: "grid" \| "narrow"; children: ReactNode }` (h2 + max-width wrapper) | S | `--color-text`, `--color-text-muted`, `--font-mono`, `--text-h2` |
+| 17 | `Section` | section | Projects, Experience, Case Studies | `{ id: string; title: string; subtitle?: string; children: ReactNode }` (h2 + max-width wrapper) | S | `--color-text`, `--color-text-muted`, `--font-mono`, `--text-h2` |
 | 18 | `HireFooter` | section | `#contact` footer | `{ session: ShellConfig; copyright: string }` | C | term-* |
 
 Hero, terminal-row wrapper, grids and the © line are inline JSX in `page.tsx` (see §7).
@@ -62,7 +62,7 @@ app/layout.tsx (S)  fonts, metadata, no-flash theme <script>, <SoundProvider>
    │   ├─ eager.map → Card ── BigStat, Tag[], Button[]   (Takavay: children = dark block with Prompt)
    │   └─ LazySection (C) placeholder = dark box: Prompt "loading 4 more projects" + Cursor solid
    │        └─ lazy.map → Card   (Takavay, last: spans all columns at every width, `col-span-full`)
-   ├─ Section #experience width=narrow
+   ├─ Section #experience
    │   └─ Window title="~/career" ── Prompt "git log --graph --career" · GitGraph · Button(term, /resume.pdf)
    ├─ Section #case-studies subtitle="written by me, published by Aim Consulting"
    │   └─ caseStudies.map → Card headerSize="sm"
@@ -174,28 +174,28 @@ Content written once that the mockup holds twice: project links (card buttons + 
 **`useActiveSection(ids: string[], rootMargin = "-45% 0px -50% 0px"): string`** (`src/hooks/useActiveSection.ts`)
 - One observer, finds elements by `document.getElementById`, so sections need no refs. Returns the current id, default `ids[0]`.
 
-**`useTypewriter(opts): TypewriterView & { start(): void }`** (`src/hooks/useTypewriter.ts`)
-- In: `{ cmd: string; lineCount: number; onChar?: () => void }`. `start(reason: "view" | "hover")` restarts from empty and picks the cooldown: `VIEW_COOLDOWN_MS` or `HOVER_COOLDOWN_MS`. `pause()` stops mid-run; `resume()` continues from where it stopped (D69).
-- Out (`TypewriterView`): `{ cmdShown: string; linesShown: number; typing: boolean; done: boolean }`.
-- First render: full text (`done: true`), so the window is never empty and never jumps.
-- `start()` is a no-op while typing or within its cooldown. Timings come from `src/lib/motion.ts`. `onChar` per command char (key click).
-- Reduced motion: `start()` does nothing, view stays complete.
-- Timers cleared on unmount.
+**`useTypewriter(opts): TypewriterView & { start(); pause(); resume() }`** (`src/hooks/useTypewriter.ts`)
+- In: `{ cmd: string; lineCount: number; onChar?: (ch: string) => void }`.
+- Out (`TypewriterView`): `{ cmdShown: string; linesShown: number; typing: boolean }`.
+- First render: full text (`typing: false`), so the window is never empty and never jumps.
+- `start()` restarts from empty; a no-op while running or within `HOVER_COOLDOWN_MS` of the last start. `pause()` stops mid-run; `resume()` continues from the same tick (D69).
+- `onChar(ch)` once per command character (the key click; a space gets the thock). Timings come from `src/lib/motion.ts`.
+- Reduced motion: `start()` does nothing, view stays complete. Timers cleared on unmount.
 
-**`useTypeOnView(ref, { cmd, lineCount, delayMs?, threshold?, once? })`** (`src/hooks/useTypewriter.ts`)
-- `useTypewriter` + `useInView` + `useSound().playKey`: types once the element scrolls into view, after `delayMs`. Used by TerminalWindow (stagger, threshold) and HireFooter (once), so neither repeats the wiring.
+**`useTypeOnView(ref, { cmd, lineCount })`** (`src/hooks/useTypewriter.ts`)
+- `useTypewriter` + `useInView(once)` + `useSound().playKey`: types once when the element first scrolls into view. Used by HireFooter.
 
 **`useCopyEmail(): { copied: boolean; copy(): void }`** (`src/hooks/useCopyEmail.ts`)
 - `navigator.clipboard.writeText(EMAIL)`; on reject/throw → `location.href = "mailto:…"`. `copied` resets after 2.5s.
 
 **`SoundProvider` / `useSound()`** (`src/providers/SoundProvider.tsx`, C)
-- Out: `{ clicks: boolean; music: boolean; toggleClicks(): void; toggleMusic(): void; playKey(kind?: "key" \| "thock"): void }`.
-- One `AudioContext`, created inside the first toggle click (user gesture). ElevenLabs files fetched only after a toggle turns on. 3–4 key samples picked at random, `thock` for space/enter, gain ≈ 0.15. Music loop fades in/out.
-- `playKey` is a no-op when clicks are off or nothing is loaded. Both off on every load (no persistence stated in PRD).
+- Out: `{ clicks: boolean; music: boolean; toggleClicks(): Promise<void>; toggleMusic(): Promise<void>; playKey(ch?: string): void }`.
+- Both start on (D72). One `AudioContext`, created at the visitor's first click, tap or key press; the listeners stay until the browser lets it run. Then the 4 key samples + thock load and the music fades in. Nothing is fetched before that.
+- `playKey` picks a random key sample (a space gets the thock), gain ≈ 0.15; a no-op when clicks are off or audio isn't unlocked. Nothing is persisted (D38).
 - Reduced motion: no effect on sound (typing does not run, so no clicks fire).
 
 **`src/lib/motion.ts`**: the only home of JS timing constants (values from `mockup/build.py`):
-`TYPE_MIN_MS = 45`, `TYPE_MAX_MS = 120`, `LINE_TICK_MS = 55`, `TICKS_PER_LINE = 4`, `START_DELAY_MS = 120`, `HOVER_COOLDOWN_MS = 3000`, `VIEW_COOLDOWN_MS = 5000`, `COPY_RESET_MS = 2500`, `CLOCK_MS = 30000`, `LAZY_ROOT_MARGIN = "10000% 0% 0%"` (load on screen, or if already scrolled past), `ACTIVE_SECTION_MARGIN = "-45% 0px -50% 0px"`. CSS motion (lift, blink) is tokenized in `tokens.css` instead.
+`TYPE_MIN_MS = 45`, `TYPE_MAX_MS = 120`, `LINE_TICK_MS = 55`, `TICKS_PER_LINE = 4`, `START_DELAY_MS = 120`, `HOVER_COOLDOWN_MS = 3000`, `COPY_RESET_MS = 2500`, `CLOCK_MS = 30000`, `LAZY_ROOT_MARGIN = "10000% 0% 0%"` (load on screen, or if already scrolled past), `ACTIVE_SECTION_MARGIN = "-45% 0px -50% 0px"`. CSS motion (lift, blink) is tokenized in `tokens.css` instead.
 
 **Theme helper (not a provider)** (`src/lib/theme.ts`)
 - `getTheme(): "light" | "dark"`, `setTheme(t)` sets `<html data-theme>` and stores the choice; `themeScript: string` is inlined in `layout.tsx` `<head>` so the first paint has the right theme (no flash). Initial value: stored choice, else `prefers-color-scheme`.

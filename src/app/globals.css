@@ -23,6 +23,7 @@
   --color-primary-fg: var(--color-primary-fg);
   --color-window-outline: var(--color-window-outline);
   --color-focus: var(--color-focus);
+  --color-scrim: var(--color-scrim);
   --color-term: var(--term-bg);
   --color-term-chrome: var(--term-chrome);
   --color-term-border: var(--term-border);
@@ -89,6 +90,11 @@
   --spacing-photo: var(--size-photo);
   --spacing-dialog-max: var(--size-dialog-max);
   --spacing-lift: var(--lift-hover);
+
+  --leading-*: initial;
+  --leading-tight: var(--leading-tight);
+  --leading-body: var(--leading-body);
+  --leading-term: var(--leading-term);
   --default-transition-duration: var(--duration-fast);
 
   --tracking-*: initial;
@@ -143,9 +149,22 @@ body {
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
+  /* An open man page defocuses the page behind it and stops it scrolling; the stable gutter
+     keeps the layout from jumping when the scrollbar hides (D78). */
+  dialog::backdrop {
+    backdrop-filter: blur(var(--blur-backdrop));
+  }
+  html:has(dialog[open]:modal) {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+  }
   :focus-visible {
     outline: var(--size-focus-ring) solid var(--color-focus);
     outline-offset: var(--size-focus-ring);
+  }
+  /* Inside dark terminal surfaces the ring uses term blue, which keeps 7:1 contrast in light mode too. */
+  :where(.bg-term) :focus-visible {
+    outline-color: var(--term-focus);
   }
 }
 

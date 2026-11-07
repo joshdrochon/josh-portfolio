@@ -6,7 +6,7 @@ import { useReducedMotion } from "../useReducedMotion";
 import { useInView } from "../useInView";
 import { useActiveSection } from "../useActiveSection";
 import { useTypewriter } from "../useTypewriter";
-import { HOVER_COOLDOWN_MS, LINE_TICK_MS, START_DELAY_MS, TICKS_PER_LINE, TYPE_MAX_MS, TYPE_MIN_MS, VIEW_COOLDOWN_MS } from "@/lib/motion";
+import { HOVER_COOLDOWN_MS, LINE_TICK_MS, START_DELAY_MS, TICKS_PER_LINE, TYPE_MAX_MS, TYPE_MIN_MS } from "@/lib/motion";
 
 const REDUCE = "(prefers-reduced-motion: reduce)";
 beforeEach(() => setMedia(REDUCE, false));
@@ -76,8 +76,8 @@ describe("useTypewriter", () => {
     vi.useFakeTimers();
     const onChar = vi.fn();
     const { result } = run(2, onChar);
-    expect(result.current).toMatchObject({ cmdShown: "ls", linesShown: 2, done: true, typing: false });
-    act(() => result.current.start("view"));
+    expect(result.current).toMatchObject({ cmdShown: "ls", linesShown: 2, typing: false });
+    act(() => result.current.start());
     expect(result.current).toMatchObject({ cmdShown: "", linesShown: 0, typing: true });
     ticksAfter(START_DELAY_MS);
     expect(result.current.cmdShown).toBe("l");
@@ -86,14 +86,14 @@ describe("useTypewriter", () => {
     ticksAfter(LINE_TICK_MS);
     expect(result.current.linesShown).toBe(1);
     ticksAfter(LINE_TICK_MS * TICKS_PER_LINE * 2);
-    expect(result.current).toMatchObject({ linesShown: 2, done: true, typing: false });
-    expect(onChar).toHaveBeenCalledTimes(cmd.length);
+    expect(result.current).toMatchObject({ linesShown: 2, typing: false });
+    expect(onChar.mock.calls).toEqual([["l"], ["s"]]);
   });
 
   it("pause freezes mid-run and resume continues from the same point (D69)", () => {
     vi.useFakeTimers();
     const { result } = run(2);
-    act(() => result.current.start("hover"));
+    act(() => result.current.start());
     ticksAfter(START_DELAY_MS);
     expect(result.current.cmdShown).toBe("l");
     act(() => result.current.pause());
@@ -103,14 +103,14 @@ describe("useTypewriter", () => {
     ticksAfter(TYPE_MAX_MS);
     expect(result.current.cmdShown).toBe("ls");
     ticksAfter(10_000);
-    expect(result.current).toMatchObject({ linesShown: 2, done: true });
+    expect(result.current).toMatchObject({ linesShown: 2, typing: false });
   });
 
   it("keeps every keystroke delay inside the jitter range", () => {
     vi.useFakeTimers();
     const spy = vi.spyOn(globalThis, "setTimeout");
     const { result } = renderHook(() => useTypewriter({ cmd: "abcdefgh", lineCount: 0 }));
-    act(() => result.current.start("view"));
+    act(() => result.current.start());
     act(() => vi.advanceTimersByTime(START_DELAY_MS + TYPE_MAX_MS * 8));
     const keyDelays = spy.mock.calls.map(([, ms]) => ms as number).slice(1, 8);
     expect(keyDelays).toHaveLength(7);
@@ -120,21 +120,18 @@ describe("useTypewriter", () => {
     });
   });
 
-  it("ignores start while typing and honours the cooldowns", () => {
+  it("ignores start while typing and honours the cooldown", () => {
     vi.useFakeTimers();
     const { result } = run(0);
-    act(() => result.current.start("view"));
+    act(() => result.current.start());
     ticksAfter(START_DELAY_MS);
-    act(() => result.current.start("hover"));
+    act(() => result.current.start());
     expect(result.current.cmdShown).toBe("l");
     ticksAfter(HOVER_COOLDOWN_MS - START_DELAY_MS - 1);
-    act(() => result.current.start("hover"));
-    expect(result.current.done).toBe(true);
+    act(() => result.current.start());
+    expect(result.current.typing).toBe(false);
     ticksAfter(1);
-    act(() => result.current.start("view"));
-    expect(result.current.done).toBe(true);
-    ticksAfter(VIEW_COOLDOWN_MS - HOVER_COOLDOWN_MS);
-    act(() => result.current.start("view"));
+    act(() => result.current.start());
     expect(result.current.typing).toBe(true);
   });
 
@@ -142,11 +139,11 @@ describe("useTypewriter", () => {
     vi.useFakeTimers();
     setMedia(REDUCE, true);
     const { result, unmount } = run();
-    act(() => result.current.start("hover"));
-    expect(result.current.done).toBe(true);
+    act(() => result.current.start());
+    expect(result.current.typing).toBe(false);
     expect(vi.getTimerCount()).toBe(0);
     setMedia(REDUCE, false);
-    act(() => result.current.start("hover"));
+    act(() => result.current.start());
     unmount();
     expect(vi.getTimerCount()).toBe(0);
   });

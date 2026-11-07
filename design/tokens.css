@@ -25,6 +25,7 @@
   --color-primary-fg:    #FFFFFF;
   --color-photo-ring:    rgba(0, 0, 0, 0.15);
   --color-scrim:         rgba(17, 17, 17, 0.55); /* dialog backdrop */
+  --blur-backdrop:       6px;  /* page behind an open man page is defocused (D78) */
   --color-focus:         #2563EB;  /* focus ring on page surfaces (5.2:1 on white) */
   --color-window-outline: #2A2B3D;  /* terminal window/card-header outline; lighter in dark theme so dark-on-dark windows stay visible (16161E on 1A1B26 is only 1.05:1) */
 
@@ -51,8 +52,6 @@
   /* ---------- Type ---------- */
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace; /* headings, labels, UI, terminal */
   --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;            /* body paragraphs only */
-  --weight-regular: 400;
-  --weight-bold:    700;
 
   --text-2xs: 11px;   /* tag pills, title-bar titles, tile labels */
   --text-xs:  12px;   /* captions, buttons, status bar */
@@ -109,7 +108,6 @@
   /* ---------- Sizes ---------- */
   --size-touch:       44px;   /* minimum hit target */
   --size-dot:         11px;   /* title-bar dots */
-  --size-graph-dot:   12px;
   --size-cursor-w:    0.56em; /* block cursor scales with its text (mockup 7×14 at 12.5px, 8×16 at 14px) */
   --size-cursor-h:    1.12em;
   --size-focus-ring:  2px;    /* outline width; offset is the same value */
@@ -135,10 +133,6 @@
   --lift-button: -2px;     /* pill buttons rise this far on hover (D76) */
   --scale-press: 0.97;     /* pill buttons shrink this much while pressed */
 
-  /* ---------- Layers ---------- */
-  --z-toggles: 10;
-  --z-statusbar: 40;
-  --z-dialog: 50;
 }
 
 /* ---------- Dark theme: system preference unless the visitor picked light ----------
