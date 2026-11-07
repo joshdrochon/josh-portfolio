@@ -30,7 +30,7 @@ Names match `docs/COMPONENTS.md`. Unit tests live in `__tests__/` next to the co
   - With `href`, renders a real `<a>` with that href.
   - A `copy` action renders a `<button>`.
   - Each variant gets its own style hook.
-  - External links get `rel="noopener noreferrer"`.
+  - Any link that isn't an in-page `#` link (other sites, `/resume.pdf`) opens in a new tab with `rel="noopener noreferrer"` (D74).
 - **CopyEmailButton**
   - Click writes the address to the clipboard (mocked) and shows **its own** copied label (D28).
   - Other copy buttons are unchanged.
@@ -154,6 +154,7 @@ Run at **390 / 834 / 1440** wide, in **light and dark**.
   - 3, 2 and 1 columns.
   - Takavay spans the full row at every width.
   - Captions never wrap.
+- **Cursor:** every link and button shows the hand cursor (D75).
 - **Touch targets** (D32): every control is at least 44px, except text links inside terminal output, which are at least 24px.
 - **Keyboard:**
   - Tab reaches every control in order, and focus is visible on each.

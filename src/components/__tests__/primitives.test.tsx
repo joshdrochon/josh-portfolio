@@ -71,6 +71,17 @@ describe("Button", () => {
     expect(screen.getByRole("link", { name: "Play now" })).toHaveAttribute("rel", "noopener noreferrer");
   });
 
+  it("opens files like the resume in a new tab, but keeps in-page # links in the tab (D74)", () => {
+    render(
+      <>
+        <Button variant="label" action={{ label: "Resume", href: "/resume.pdf" }} />
+        <Button variant="label" action={{ label: "Projects", href: "#projects" }} />
+      </>,
+    );
+    expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute("target", "_blank");
+    expect(screen.getByRole("link", { name: "Projects" })).not.toHaveAttribute("target");
+  });
+
   it("renders a copy action as a button", () => {
     render(<Button variant="link" action={{ label: "> email", copy: "email", copiedLabel: "✓ copied" }} />);
     expect(screen.getByRole("button", { name: "> email" })).toHaveClass("text-term-blue");

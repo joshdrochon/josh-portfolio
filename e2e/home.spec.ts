@@ -48,3 +48,9 @@ test("man page matches its baseline", async ({ page }) => {
   await expect(page.getByRole("dialog")).toBeVisible();
   await expect(page).toHaveScreenshot("man-ship.png", { mask: [clock(page)] });
 });
+
+test("everything clickable shows the hand cursor (D75)", async ({ page }) => {
+  await load(page);
+  const cursors = await page.locator("a[href], button").evaluateAll((els) => els.map((e) => `${getComputedStyle(e).cursor} ${e.textContent?.trim().slice(0, 30)}`));
+  expect(cursors.filter((c) => !c.startsWith("pointer"))).toEqual([]);
+});
