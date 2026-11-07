@@ -81,3 +81,5 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D63 | 2026-11-06 | `ls projects/` shows the first 3 slugs, then "+ N more" (replaces "first 4" in D44): "clinical-copilot/" made the second line too wide for the window | Found in screenshot review |
 | D64 | 2026-11-06 | Global focus ring lives in `@layer base` so component utilities can override it (the man page body showed a stray outline) | Found in screenshot review |
 | D65 | 2026-11-06 | Lighthouse CI uses real (devtools) throttling, not the simulated estimate. Simulated mobile LCP was 2.9 s; real Chrome on the same slow-4G + 4x CPU profile paints the LCP element (the photo) at 0.64–1.45 s. Budgets unchanged | Measured |
+| D66 | 2026-11-06 | Music is a 3-minute ElevenLabs track (same prompt) with a 3 s crossfade at the loop point, at -18.4 LUFS (old track -16.9). The old 60 s track ended in ~8 s of near-silence, which sounded broken on loop | Josh |
+| D67 | 2026-11-06 | Hero photo is the 800 px LinkedIn original (was 200 px, blurry at 288 px display) | Josh |
