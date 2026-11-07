@@ -25,24 +25,40 @@ export function useTypewriter({ cmd, lineCount, onChar }: Options) {
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const typing = tick < total;
-  const busy = useRef(false);
-  // Stable across renders, so effects can list it as a dependency without re-running per keystroke.
-  const start = useCallback(
-    (reason: keyof typeof COOLDOWN) => {
-      if (reduce || busy.current || Date.now() - lastRun.current < COOLDOWN[reason]) return;
-      lastRun.current = Date.now();
-      busy.current = true;
-      setTick(0);
+  const running = useRef(false);
+  const at = useRef(total); // last tick shown, so resume() knows where to pick up
+  const run = useCallback(
+    (from: number, delay: number) => {
+      running.current = true;
       const step = (n: number) => {
         if (n <= cmd.length) charCb.current?.();
+        at.current = n;
         setTick(n);
         if (n < total) timer.current = setTimeout(() => step(n + 1), n < cmd.length ? jitter() : M.LINE_TICK_MS);
-        else busy.current = false;
+        else running.current = false;
       };
-      timer.current = setTimeout(() => step(1), M.START_DELAY_MS);
+      timer.current = setTimeout(() => step(from), delay);
     },
-    [reduce, cmd, total],
+    [cmd, total],
   );
+  // Stable across renders, so effects can list them as dependencies without re-running per keystroke.
+  const start = useCallback(
+    (reason: keyof typeof COOLDOWN) => {
+      if (reduce || running.current || Date.now() - lastRun.current < COOLDOWN[reason]) return;
+      lastRun.current = Date.now();
+      at.current = 0;
+      setTick(0);
+      run(1, M.START_DELAY_MS);
+    },
+    [reduce, run],
+  );
+  const pause = useCallback(() => {
+    clearTimeout(timer.current);
+    running.current = false;
+  }, []);
+  const resume = useCallback(() => {
+    if (!running.current && at.current < total) run(at.current + 1, 0);
+  }, [run, total]);
 
   return {
     cmdShown: cmd.slice(0, Math.min(tick, cmd.length)),
@@ -50,6 +66,8 @@ export function useTypewriter({ cmd, lineCount, onChar }: Options) {
     typing,
     done: !typing,
     start,
+    pause,
+    resume,
   };
 }
 

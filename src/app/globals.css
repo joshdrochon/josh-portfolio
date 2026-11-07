@@ -131,3 +131,24 @@ body {
     outline-offset: var(--size-focus-ring);
   }
 }
+
+/* Hero photo CRT effect (D70): scanlines and a green glow that clear on hover. */
+@layer components {
+  .photo-crt {
+    position: relative;
+    border-radius: var(--radius-round);
+    box-shadow: var(--shadow-photo-glow);
+    transition: box-shadow var(--duration-slow) var(--ease);
+  }
+  .photo-crt::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--image-crt);
+    pointer-events: none;
+    transition: opacity var(--duration-slow) var(--ease);
+  }
+  .photo-crt:hover { box-shadow: var(--shadow-photo); }
+  .photo-crt:hover::after { opacity: 0; }
+}

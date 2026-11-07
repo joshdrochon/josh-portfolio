@@ -18,7 +18,7 @@ import { cardActions, manPages } from "@/lib/actions";
 import { projects } from "@/data/projects";
 import { experience } from "@/data/experience";
 import { hire, navTabs, windows } from "@/data/site";
-import { CLOCK_MS, STAGGER_MS, START_DELAY_MS, VIEW_COOLDOWN_MS } from "@/lib/motion";
+import { CLOCK_MS, START_DELAY_MS } from "@/lib/motion";
 
 const withSound = (ui: ReactNode) => render(<SoundProvider>{ui}</SoundProvider>);
 const bySlug = (slug: string) => projects.find((p) => p.slug === slug)!;
@@ -77,13 +77,46 @@ describe("ShellSession", () => {
 });
 
 describe("TerminalWindow", () => {
-  it("starts complete, types on scroll-in after its stagger, and lifts on hover or focus", () => {
+  const frozenAfter = (container: HTMLElement, ms: number) => {
+    const before = container.textContent;
+    act(() => vi.advanceTimersByTime(ms));
+    return container.textContent === before;
+  };
+
+  it("shows finished text and types only while hovered: pauses on leave, resumes on re-enter (D69)", () => {
     vi.useFakeTimers();
-    const { container } = withSound(<TerminalWindow config={windows[0]} index={2} />);
+    const { container } = withSound(<TerminalWindow config={windows[0]} />);
+    const box = container.firstElementChild!;
+    act(() => vi.advanceTimersByTime(60_000));
     expect(container).toHaveTextContent("+ 8 more");
-    fireLast(container.firstElementChild!);
-    act(() => vi.advanceTimersByTime(STAGGER_MS * 2 + START_DELAY_MS));
+    fireEvent.pointerEnter(box, { pointerType: "mouse" });
+    act(() => vi.advanceTimersByTime(START_DELAY_MS + 1));
     expect(container).not.toHaveTextContent("+ 8 more");
+    fireEvent.pointerLeave(box, { pointerType: "mouse" });
+    expect(frozenAfter(container, 60_000)).toBe(true);
+    expect(container).not.toHaveTextContent("+ 8 more");
+    fireEvent.pointerEnter(box, { pointerType: "mouse" });
+    act(() => vi.advanceTimersByTime(60_000));
+    expect(container).toHaveTextContent("+ 8 more");
+  });
+
+  it("on touch, a tap types it and a tap elsewhere pauses it", () => {
+    vi.useFakeTimers();
+    const { container } = withSound(
+      <>
+        <TerminalWindow config={windows[0]} />
+        <p>outside</p>
+      </>,
+    );
+    fireEvent.pointerDown(container.firstElementChild!, { pointerType: "touch" });
+    act(() => vi.advanceTimersByTime(START_DELAY_MS + 1));
+    expect(container).not.toHaveTextContent("+ 8 more");
+    fireEvent.pointerDown(screen.getByText("outside"), { pointerType: "touch" });
+    expect(frozenAfter(container, 60_000)).toBe(true);
+  });
+
+  it("lifts on keyboard focus", () => {
+    withSound(<TerminalWindow config={windows[0]} />);
     const win = screen.getByText("~/projects").closest(".rounded-window")!;
     fireEvent.focus(screen.getByRole("link", { name: "Projects" }));
     expect(win.className).toContain("shadow-window-hover");
@@ -91,31 +124,17 @@ describe("TerminalWindow", () => {
     expect(win.className).not.toContain("shadow-window-hover");
   });
 
-  it("types on scroll-in only once; scrolling back does not retype (D68)", () => {
-    vi.useFakeTimers();
-    const { container } = withSound(<TerminalWindow config={windows[0]} index={0} />);
-    const el = container.firstElementChild!;
-    fireLast(el);
-    act(() => vi.advanceTimersByTime(60_000));
-    expect(container).toHaveTextContent("+ 8 more");
-    fireLast(el, false);
-    act(() => vi.advanceTimersByTime(VIEW_COOLDOWN_MS + 1));
-    fireLast(el);
-    act(() => vi.advanceTimersByTime(START_DELAY_MS + 1));
-    expect(container).toHaveTextContent("+ 8 more");
-  });
-
   it.each([
     ["projects", "Projects", "#projects"],
     ["about", "About Me", "#man/josh"],
     ["resume", "Resume", "/resume.pdf"],
   ])("%s label goes to %s", (id, name, href) => {
-    withSound(<TerminalWindow config={windows.find((w) => w.id === id)!} index={0} />);
+    withSound(<TerminalWindow config={windows.find((w) => w.id === id)!} />);
     expect(screen.getByRole("link", { name })).toHaveAttribute("href", href);
   });
 
   it("contact label copies the email", () => {
-    withSound(<TerminalWindow config={windows.find((w) => w.id === "contact")!} index={0} />);
+    withSound(<TerminalWindow config={windows.find((w) => w.id === "contact")!} />);
     expect(screen.getByRole("button", { name: "Contact" })).toBeInTheDocument();
   });
 });

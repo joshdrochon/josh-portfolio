@@ -1,26 +1,51 @@
 "use client";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { PointerEvent } from "react";
 import type { TerminalWindowConfig } from "@/data/types";
-import { useTypeOnView } from "@/hooks/useTypewriter";
-import { STAGGER_MS, WINDOW_THRESHOLD } from "@/lib/motion";
+import { useTypewriter } from "@/hooks/useTypewriter";
+import { useSound } from "@/providers/SoundProvider";
 import { Button } from "./Button";
 import { ShellSession } from "./ShellSession";
 import { Window } from "./Window";
 
-// One of the four top windows. Types when it scrolls into view and again on hover or focus.
-export function TerminalWindow({ config, index }: { config: TerminalWindowConfig; index: number }) {
+const isMouse = (e: { pointerType: string }) => e.pointerType === "mouse";
+
+// One of the four top windows. Shows its finished output, and types only while hovered (or tapped, on touch):
+// leaving pauses it mid-line, coming back picks up where it stopped (D69).
+export function TerminalWindow({ config }: { config: TerminalWindowConfig }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
-  const { start, ...view } = useTypeOnView(ref, { cmd: config.cmd, lineCount: config.lines.length, delayMs: index * STAGGER_MS, threshold: WINDOW_THRESHOLD, once: true });
+  const { playKey } = useSound();
+  const { start, pause, resume, ...view } = useTypewriter({ cmd: config.cmd, lineCount: config.lines.length, onChar: playKey });
 
   const on = () => {
     setActive(true);
-    start("hover");
+    if (view.typing) resume();
+    else start("hover");
   };
-  const off = () => setActive(false);
+  const off = useCallback(() => {
+    setActive(false);
+    pause();
+  }, [pause]);
 
+  // Touch has no "leave": a tap anywhere outside the window counts as leaving it.
+  useEffect(() => {
+    if (!active) return;
+    const away = (e: globalThis.PointerEvent) => !isMouse(e) && !ref.current?.contains(e.target as Node) && off();
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [active, off]);
+
+  const mouse = (fn: () => void) => (e: PointerEvent) => isMouse(e) && fn();
   return (
-    <div ref={ref} onMouseEnter={on} onMouseLeave={off} onFocus={on} onBlur={off}>
+    <div
+      ref={ref}
+      onPointerEnter={mouse(on)}
+      onPointerLeave={mouse(off)}
+      onPointerDown={(e) => !isMouse(e) && on()}
+      onFocus={on}
+      onBlur={off}
+    >
       <Window
         title={config.title}
         className={`flex h-window flex-col transition motion-reduce:transition-none ${active ? "translate-y-lift shadow-window-hover!" : ""}`}

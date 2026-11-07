@@ -66,6 +66,7 @@ Names match `docs/COMPONENTS.md`. Unit tests live in `__tests__/` next to the co
   - Retype: hover or focus needs `HOVER_COOLDOWN_MS` (3s) since the last run; scroll into view needs `VIEW_COOLDOWN_MS` (5s) (PRD §3.3).
   - Reduced motion: done immediately, no timers.
   - Calls `onChar` once per command character, never for output lines.
+  - `pause()` freezes it mid-run; `resume()` continues from the same tick (D69).
   - Unmount clears every timer.
 - **useCopyEmail**
   - Same contract as CopyEmailButton, at hook level.
@@ -97,8 +98,10 @@ Names match `docs/COMPONENTS.md`. Unit tests live in `__tests__/` next to the co
   - Only the active window's cursor blinks.
 - **TerminalWindow**
   - Before typing, shows the finished output.
-  - Types on scroll into view, staggered `STAGGER_MS` by index, only the first time; scrolling back does not retype (D68).
-  - Hover **or keyboard focus** lifts it, gives it the hover shadow, and starts a retype (subject to cooldown).
+  - Shows finished output and never types on its own (D69).
+  - Types only while the mouse is over it; leaving pauses it, re-entering resumes from the same point.
+  - On touch, a tap types it and a tap elsewhere pauses it.
+  - Keyboard focus lifts it and gives it the hover shadow.
   - The label action works: Projects goes to `#projects`, About opens `#man/josh`, Contact copies the email, Resume goes to `/resume.pdf`.
 - **ManPage**
   - Opens on `#man/<slug>`.
