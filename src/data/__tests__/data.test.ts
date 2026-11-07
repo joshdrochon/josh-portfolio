@@ -29,7 +29,7 @@ describe("content data (docs/TESTING.md §4)", () => {
   });
 
   it("uses https for every external link", () => {
-    const hrefs = [...projects.flatMap((p) => p.links.map((l) => l.href)), ...caseStudies.map((c) => c.href), ...(aboutPage.seeAlso ?? []).map((l) => l.href)];
+    const hrefs = [...projects.flatMap((p) => p.links.map((l) => l.href)), ...caseStudies.map((c) => c.href), ...(aboutPage.seeAlso ?? []).flatMap((l) => ("href" in l ? [l.href] : []))];
     hrefs.filter((h) => !h.startsWith("#") && !h.startsWith("/")).forEach((h) => expect(h).toMatch(/^https:\/\//));
   });
 

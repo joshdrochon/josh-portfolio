@@ -16,7 +16,7 @@ type Sound = {
   music: boolean;
   toggleClicks: () => Promise<void>;
   toggleMusic: () => Promise<void>;
-  playKey: (kind?: "key" | "thock") => void;
+  playKey: (ch?: string) => void; // the typed character: a space gets the deeper "thock"
 };
 
 const SoundContext = createContext<Sound | null>(null);
@@ -83,15 +83,22 @@ export function SoundProvider({ children }: { children: ReactNode }) {
   const loadClicks = useCallback(() => load([...KEYS, THOCK]), [load]);
 
   useEffect(() => {
+    // Listeners stay until the browser really lets audio run, in case a first key press doesn't count.
+    let unlocked = false;
     const unlock = () => {
-      UNLOCK_EVENTS.forEach((e) => document.removeEventListener(e, unlock, true));
-      audio();
-      if (want.current.clicks) void loadClicks();
-      if (want.current.music) void startMusic();
+      ctx.current ??= new AudioContext();
+      const ac = ctx.current;
+      void ac.resume().then(() => {
+        if (unlocked || ac.state !== "running") return;
+        unlocked = true;
+        UNLOCK_EVENTS.forEach((e) => document.removeEventListener(e, unlock, true));
+        if (want.current.clicks) void loadClicks();
+        if (want.current.music) void startMusic();
+      });
     };
     UNLOCK_EVENTS.forEach((e) => document.addEventListener(e, unlock, true));
     return () => UNLOCK_EVENTS.forEach((e) => document.removeEventListener(e, unlock, true));
-  }, [audio, loadClicks, startMusic]);
+  }, [loadClicks, startMusic]);
 
   const value: Sound = {
     clicks,
@@ -111,9 +118,9 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       loop.current.src.stop(ac.currentTime + FADE_S);
       loop.current = null;
     },
-    playKey: (kind = "key") => {
+    playKey: (ch) => {
       if (!clicks || !ctx.current) return;
-      play(kind === "thock" ? THOCK : KEYS[Math.floor(Math.random() * KEYS.length)], KEY_GAIN);
+      play(ch === " " ? THOCK : KEYS[Math.floor(Math.random() * KEYS.length)], KEY_GAIN);
     },
   };
 

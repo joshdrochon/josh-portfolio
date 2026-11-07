@@ -63,3 +63,15 @@ test("pill buttons rise on hover (D76)", async ({ page }) => {
   await pill.hover();
   await expect.poll(transform).not.toBe("none");
 });
+
+test("an open man page blurs the page behind it, which can't scroll (D78)", async ({ page }) => {
+  await page.goto("/#man/ship");
+  await expect(page.getByRole("dialog")).toBeVisible();
+  const blur = await page.evaluate(() => getComputedStyle(document.querySelector("dialog")!, "::backdrop").backdropFilter);
+  expect(blur).toContain("blur");
+  const before = await page.evaluate(() => scrollY);
+  await page.mouse.move(5, 5);
+  await page.mouse.wheel(0, 800);
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => scrollY)).toBe(before);
+});

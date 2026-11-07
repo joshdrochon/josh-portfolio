@@ -100,9 +100,10 @@ Four identical macOS-style terminal windows: Projects, About Me, Contact, Resume
 ### 3.5 Read more = man page overlay
 A modal styled as a Unix manual page, what `man ship` prints in a terminal. Engineers recognise it. The BUGS section is the "senior" signal: it shows honesty and tradeoffs.
 - **Layout:**
-  - Native `<dialog>` (D27): a terminal window, max 860px wide, over a dimmed backdrop. The title bar reads `man <slug>` with a `q · close` button (≥44px).
+  - Native `<dialog>` (D27): a terminal window, max 860px wide, over a dimmed, blurred backdrop (6px, D78). The title bar reads `man <slug>` with a `q · close` button (≥44px).
   - Header row: `NAME(1)   meta   NAME(1)`.
   - Sections: **NAME, SYNOPSIS** (number tiles), **DESCRIPTION, DESIGN DECISIONS, BUGS, STACK, SEE ALSO**. Sections without facts are omitted.
+  - SEE ALSO shows the same buttons, with the same labels, as the project's card (D77).
   - For private repos, SEE ALSO says "private repo · walkthrough on request".
 - **Pager footer** (inverted bar): `Manual page ship(1) · 42% · j/k scroll · q quit`. The percentage tracks scroll.
 - **Keys:** `j`/`↓` and `k`/`↑` scroll, space pages down, `q`/`Esc` close.
@@ -110,7 +111,7 @@ A modal styled as a Unix manual page, what `man ship` prints in a terminal. Engi
 - **Accessibility:**
   - Labelled by the NAME line text, for example "ship — …" (D41).
   - Focus moves in, is trapped, and returns to the opener; on a deep link it goes to the `#projects` heading (D35).
-  - The page behind can't scroll; the dialog scrolls inside and fits `100dvh`. Joan's modals broke on phone landscape and with the iOS keyboard.
+  - The page behind can't scroll (`html` is locked while the dialog is open, with a stable scrollbar gutter, D78); the dialog scrolls inside and fits `100dvh`. Joan's modals broke on phone landscape and with the iOS keyboard.
 - Planned: a View Transition that grows the man page out of the card header, with a plain fade under reduced motion.
 - All man-page copy is in `mockup/build.py` → `MAN`, to be ported to `src/data/projects.ts`.
 

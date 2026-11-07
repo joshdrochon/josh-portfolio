@@ -63,9 +63,9 @@ Names match `docs/COMPONENTS.md`. Unit tests live in `__tests__/` next to the co
   - Types the command one character at a time, each delay inside `TYPE_MIN_MS`–`TYPE_MAX_MS`.
   - Prints output lines `TICKS_PER_LINE` ticks apart, then marks done.
   - `start()` while typing does nothing.
-  - Retype: hover or focus needs `HOVER_COOLDOWN_MS` (3s) since the last run; scroll into view needs `VIEW_COOLDOWN_MS` (5s) (PRD §3.3).
+  - Restart needs `HOVER_COOLDOWN_MS` (3s) since the last start (PRD §3.3).
   - Reduced motion: done immediately, no timers.
-  - Calls `onChar` once per command character, never for output lines.
+  - Calls `onChar(ch)` once per command character, with that character, never for output lines.
   - `pause()` freezes it mid-run; `resume()` continues from the same tick (D69).
   - Unmount clears every timer.
 - **useCopyEmail**
@@ -102,13 +102,15 @@ Names match `docs/COMPONENTS.md`. Unit tests live in `__tests__/` next to the co
   - Types only while the mouse is over it; leaving pauses it, re-entering resumes from the same point.
   - On touch, a tap types it and a tap elsewhere pauses it.
   - Keyboard focus lifts it and gives it the hover shadow.
+  - Clicking, tapping or tabbing to a link inside a finished window never restarts it, so the link stays put.
   - The label action works: Projects goes to `#projects`, About opens `#man/josh`, Contact copies the email, Resume goes to `/resume.pdf`.
 - **ManPage**
   - Opens on `#man/<slug>`.
   - Closes on `q`, Escape, the close button or a backdrop click; closing removes the hash with `history.replaceState`.
-  - Focus moves in, is trapped, and returns to the opener. With no opener (deep link), focus goes to the `#projects` heading (D35).
+  - Focus moves in, is trapped, and returns to the opener, also when closed with the Back button. With no opener (deep link), focus goes to the `#projects` heading (D35).
   - Accessible name is the NAME line text (for example "ship — …"), not "NAME" (D41).
   - `j`/`k`/arrows scroll, space pages down, and the pager percentage follows scroll.
+  - SEE ALSO uses exactly the card's button labels (D77).
   - Empty sections aren't rendered. Private projects show "private repo · walkthrough on request".
   - Every slug in the PRD §5 table opens its page, and an unknown slug opens nothing.
 - **GitGraph**
@@ -162,7 +164,7 @@ Run at **390 / 834 / 1440** wide, in **light and dark**.
   - Every Read more opens its own project's page.
 - **Man page on a phone:**
   - Fits in `100dvh`.
-  - The page behind can't scroll.
+  - The page behind is blurred and can't scroll (D78).
   - The dialog scrolls internally.
 - **Theme:** the toggle switches the theme and the choice survives a reload with no flash.
 - **Lazy cards:** they mount only once on screen and fade in (D73), and mounting causes no layout shift (CLS 0 measured around it).

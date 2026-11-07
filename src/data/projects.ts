@@ -843,15 +843,15 @@ export const aboutPage: ManPageData = {
   "slug": "josh",
   "seeAlso": [
     {
-      "label": "resume.pdf",
+      "label": "Resume",
       "href": "/resume.pdf"
     },
     {
-      "label": "linkedin",
+      "label": "LinkedIn",
       "href": "https://www.linkedin.com/in/josh-rochon"
     },
     {
-      "label": "github",
+      "label": "GitHub",
       "href": "https://github.com/joshdrochon"
     }
   ]

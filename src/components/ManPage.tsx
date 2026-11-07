@@ -14,6 +14,7 @@ export function ManPage({ pages }: { pages: ManPageData[] }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const body = useRef<HTMLDivElement>(null);
   const opener = useRef<HTMLElement | null>(null);
+  const shown = useRef(false);
   const page = pages.find((p) => p.slug === slug);
 
   useEffect(() => {
@@ -31,7 +32,13 @@ export function ManPage({ pages }: { pages: ManPageData[] }) {
     const d = dialog.current;
     if (page && d && !d.open) {
       d.showModal();
+      shown.current = true;
       body.current?.focus(); // j/k scroll right away
+    } else if (!page && shown.current) {
+      // Closed by q/Escape/backdrop or by the Back button: focus goes back to the opener (D35).
+      shown.current = false;
+      (opener.current ?? document.querySelector<HTMLElement>("#projects h2"))?.focus();
+      opener.current = null;
     }
   }, [page]);
 
@@ -39,8 +46,6 @@ export function ManPage({ pages }: { pages: ManPageData[] }) {
     dialog.current?.close();
     history.replaceState(null, "", location.pathname + location.search);
     setSlug(null);
-    (opener.current ?? document.querySelector<HTMLElement>("#projects h2"))?.focus();
-    opener.current = null;
   };
 
   // j/k like `less`; arrows and space already scroll the focused body natively.
@@ -69,7 +74,7 @@ export function ManPage({ pages }: { pages: ManPageData[] }) {
       <Window
         title={`man ${page.slug}`}
         actions={
-          <button type="button" onClick={close} className="pill-hover min-h-touch rounded-tile border border-term-redact px-3 text-term-text">
+          <button type="button" onClick={close} className="min-h-touch rounded-tile border border-term-redact px-3 text-term-text">
             q · close
           </button>
         }
@@ -116,7 +121,7 @@ export function ManPage({ pages }: { pages: ManPageData[] }) {
           ))}
           <h3 className={H}>SEE ALSO</h3>
           <div className="mt-2 mb-5 ml-7 flex flex-wrap gap-3">
-            {page.seeAlso?.length ? page.seeAlso.map((l) => <Button key={l.href} variant="term" action={l} />) : <p className="text-term-muted">private repo · walkthrough on request</p>}
+            {page.seeAlso?.length ? page.seeAlso.map((l) => <Button key={l.label} variant="term" action={l} />) : <p className="text-term-muted">private repo · walkthrough on request</p>}
           </div>
         </div>
         <Pager slug={page.slug} body={body} />
@@ -135,6 +140,7 @@ function Pager({ slug, body }: { slug: string; body: RefObject<HTMLDivElement | 
       const max = el.scrollHeight - el.clientHeight;
       setPct(max > 0 ? Math.round((el.scrollTop / max) * 100) : 100);
     };
+    update();
     el.addEventListener("scroll", update, { passive: true });
     return () => el.removeEventListener("scroll", update);
   }, [body, slug]);
