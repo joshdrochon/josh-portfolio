@@ -169,6 +169,7 @@ Run at **390 / 834 / 1440** wide, in **light and dark**.
 - **Link check:** every href returns 2xx or 3xx. Runs nightly and before launch, not per PR.
 
 ## 6. Performance budgets
+- Lighthouse runs with real throttling (`throttlingMethod: devtools`, D65): the simulated estimate put the photo behind every script and over-reported LCP.
 - **Lighthouse CI, mobile preset:**
   - LCP ≤ 2.5s, CLS ≤ 0.1.
   - TBT < 200ms, as the lab stand-in for INP, which lab runs can't measure.

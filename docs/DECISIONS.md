@@ -80,3 +80,4 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D62 | 2026-11-06 | BigStat gains an `error` (red) variant for This Portfolio's RangeError; edited a locked file | Josh: "keep going, you don't need me" |
 | D63 | 2026-11-06 | `ls projects/` shows the first 3 slugs, then "+ N more" (replaces "first 4" in D44): "clinical-copilot/" made the second line too wide for the window | Found in screenshot review |
 | D64 | 2026-11-06 | Global focus ring lives in `@layer base` so component utilities can override it (the man page body showed a stray outline) | Found in screenshot review |
+| D65 | 2026-11-06 | Lighthouse CI uses real (devtools) throttling, not the simulated estimate. Simulated mobile LCP was 2.9 s; real Chrome on the same slow-4G + 4x CPU profile paints the LCP element (the photo) at 0.64–1.45 s. Budgets unchanged | Measured |
