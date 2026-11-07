@@ -97,7 +97,7 @@ Names match `docs/COMPONENTS.md`. Unit tests live in `__tests__/` next to the co
   - Only the active window's cursor blinks.
 - **TerminalWindow**
   - Before typing, shows the finished output.
-  - Types on scroll into view, staggered `STAGGER_MS` by index.
+  - Types on scroll into view, staggered `STAGGER_MS` by index, only the first time; scrolling back does not retype (D68).
   - Hover **or keyboard focus** lifts it, gives it the hover shadow, and starts a retype (subject to cooldown).
   - The label action works: Projects goes to `#projects`, About opens `#man/josh`, Contact copies the email, Resume goes to `/resume.pdf`.
 - **ManPage**
