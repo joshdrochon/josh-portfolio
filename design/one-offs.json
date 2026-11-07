@@ -3,6 +3,5 @@
   "hero-tracking": "Hero title letter-spacing -1px, display size only",
   "graph-branch-curve": "Git-graph branch-off corner radii",
   "graph-dot-ring": "Ring that punches graph dots out of the trunk line",
-  "hollow-cursor": "Unfocused-terminal hollow cursor outline",
   "redaction-widths": "Uneven redaction bar widths"
 }

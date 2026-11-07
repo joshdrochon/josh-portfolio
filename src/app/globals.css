@@ -36,6 +36,10 @@
   --color-term-amber: var(--term-amber);
   --color-term-red: var(--term-red);
   --color-term-purple: var(--term-purple);
+  --color-term-bright: var(--term-bright);
+  --color-dot-close: var(--term-dot-close);
+  --color-dot-min: var(--term-dot-min);
+  --color-dot-max: var(--term-dot-max);
 
   --font-*: initial;
   --font-mono: var(--font-mono);
@@ -72,6 +76,35 @@
   --shadow-window-hover: var(--shadow-window-hover);
   --shadow-dialog: var(--shadow-dialog);
   --shadow-photo: var(--shadow-photo);
+  --shadow-cursor-hollow: var(--shadow-cursor-hollow);
+
+  --spacing-touch: var(--size-touch);
+  --spacing-dot: var(--size-dot);
+  --spacing-cursor-w: var(--size-cursor-w);
+  --spacing-cursor-h: var(--size-cursor-h);
+  --spacing-window-label: var(--size-window-label);
+
+  --tracking-*: initial;
+  --tracking-tight: var(--tracking-tight);
+  --tracking-label: var(--tracking-label);
+
+  --animate-blink: blink calc(var(--duration-blink) * 2) step-end infinite;
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+}
+
+/* dark: = the visitor chose dark, or the OS is dark and they did not choose light (STYLE_GUIDE §6) */
+@custom-variant dark {
+  &:where([data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
 }
 
 html {
