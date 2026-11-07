@@ -81,7 +81,7 @@ Four identical macOS-style terminal windows: Projects, About Me, Contact, Resume
   - The Projects label scrolls to `#projects`.
   - The About Me label opens the `josh(1)` man page.
   - The Contact label copies the email.
-  - The Resume label opens `/resume.pdf` in a new tab (D74). Every link that leaves the page opens a new tab; only in-page `#` links stay. Everything clickable shows the hand cursor, and section links scroll smoothly (D75).
+  - The Resume label opens `/resume.pdf` in a new tab (D74). Every link that leaves the page opens a new tab; only in-page `#` links stay. Everything clickable shows the hand cursor, and section links scroll smoothly (D75). Pill buttons rise 2px, brighten their outline and cast a soft shadow on hover, and dip slightly when pressed (D76).
   - linkedin and github are links. Email copies to the clipboard and shows its own `✓ copied` (D28), falling back to `mailto:`.
   - Window labels are ≥44px. The three link lines inside the Contact window may be 24px (D32).
 

@@ -69,7 +69,7 @@ export function ManPage({ pages }: { pages: ManPageData[] }) {
       <Window
         title={`man ${page.slug}`}
         actions={
-          <button type="button" onClick={close} className="min-h-touch rounded-tile border border-term-redact px-3 text-term-text">
+          <button type="button" onClick={close} className="pill-hover min-h-touch rounded-tile border border-term-redact px-3 text-term-text">
             q · close
           </button>
         }

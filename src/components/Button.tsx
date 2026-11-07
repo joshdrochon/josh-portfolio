@@ -4,7 +4,7 @@ import { CopyEmailButton } from "./CopyEmailButton";
 type Variant = "primary" | "secondary" | "term" | "link" | "label";
 type Props = { action: Action; variant: Variant; className?: string };
 
-const PILL = "inline-flex min-h-touch items-center gap-2 rounded-pill px-4 font-mono";
+const PILL = "pill-hover inline-flex min-h-touch items-center gap-2 rounded-pill px-4 font-mono";
 const VARIANTS: Record<Variant, string> = {
   primary: `${PILL} bg-primary-bg text-sm font-bold text-primary-fg`,
   secondary: `${PILL} border border-control bg-surface text-xs text-text-strong`,

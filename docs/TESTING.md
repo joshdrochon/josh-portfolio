@@ -155,6 +155,7 @@ Run at **390 / 834 / 1440** wide, in **light and dark**.
   - Takavay spans the full row at every width.
   - Captions never wrap.
 - **Cursor:** every link and button shows the hand cursor (D75).
+- **Pill hover:** pill buttons rise on hover (D76).
 - **Touch targets** (D32): every control is at least 44px, except text links inside terminal output, which are at least 24px.
 - **Keyboard:**
   - Tab reaches every control in order, and focus is visible on each.

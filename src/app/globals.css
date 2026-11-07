@@ -169,3 +169,22 @@ body {
   .photo-crt:hover { box-shadow: var(--shadow-photo); }
   .photo-crt:hover::after { opacity: 0; }
 }
+
+/* Pill buttons (D76): rise slightly, brighten their outline and cast a soft shadow on hover; dip on press. */
+@layer components {
+  .pill-hover {
+    transition-property: transform, border-color, box-shadow;
+    transition-duration: var(--duration-fast);
+    transition-timing-function: var(--ease);
+  }
+  @media (hover: hover) {
+    .pill-hover:hover {
+      transform: translateY(var(--lift-button));
+      border-color: currentColor;
+      box-shadow: var(--shadow-button-hover);
+    }
+  }
+  .pill-hover:active {
+    transform: scale(var(--scale-press));
+  }
+}
