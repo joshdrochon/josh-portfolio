@@ -169,11 +169,12 @@ Run at **390 / 834 / 1440** wide, in **light and dark**.
 - **Link check:** every href returns 2xx or 3xx. Runs nightly and before launch, not per PR.
 
 ## 6. Performance budgets
+- Lighthouse runs with real throttling (`throttlingMethod: devtools`, D65): the simulated estimate put the photo behind every script and over-reported LCP.
 - **Lighthouse CI, mobile preset:**
   - LCP ≤ 2.5s, CLS ≤ 0.1.
   - TBT < 200ms, as the lab stand-in for INP, which lab runs can't measure.
   - Accessibility score 100.
-- **`size-limit`:** first-load JS for the home page, read from the prerendered HTML (`.size-limit.js`). Measured 2026-11-06: **186 KB gzipped on an empty page**, almost all React 19 and the Next.js runtime, so the earlier 90 KB target can't be met with Next.js. Limit is **200 KB** for now (D57). Our own code may add at most the headroom.
+- **`size-limit`:** first-load JS for the home page, read from the prerendered HTML (`.size-limit.js`). Measured 2026-11-06: **186 KB gzipped on an empty page**, almost all React 19 and the Next.js runtime, so the earlier 90 KB target can't be met with Next.js. Limit is **220 KB** (D57, D60). Our own code may add at most the headroom.
 - **Audio:** files never appear in the initial request list.
 
 ## 7. What not to test

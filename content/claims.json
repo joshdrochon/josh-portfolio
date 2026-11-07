@@ -1,5 +1,19 @@
 {
+  "_doc": "Claims the site must keep in step with the resume (docs/GUARDRAILS.md §3). Update this when the resume or site changes.",
   "years": "7",
   "clients": ["Starbucks", "Microsoft", "BECU", "Purple"],
-  "headline": {}
+  "publicRepos": ["keyblaster", "ship", "labelproof", "one-ramp", "josh-portfolio"],
+  "headline": {
+    "keyblaster": "4,500+ tests",
+    "silent-flow": "23.3% → 18.9%",
+    "ship": "1,276 → 103 ms",
+    "clinical-copilot": "96/96 passed",
+    "diagnostic-tutor": "86% vs 71.5%",
+    "coach-study": "97.9%",
+    "whiteout-ultima": "No engine",
+    "labelproof": "100%",
+    "one-ramp": "1 click",
+    "josh-portfolio": "RangeError",
+    "takavay": "[redacted]"
+  }
 }

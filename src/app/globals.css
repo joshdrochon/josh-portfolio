@@ -83,6 +83,13 @@
   --spacing-cursor-w: var(--size-cursor-w);
   --spacing-cursor-h: var(--size-cursor-h);
   --spacing-window-label: var(--size-window-label);
+  --spacing-window: var(--size-window-h);
+  --spacing-card-header: var(--size-card-header);
+  --spacing-case-header: var(--size-case-header);
+  --spacing-photo: var(--size-photo);
+  --spacing-dialog-max: var(--size-dialog-max);
+  --spacing-lift: var(--lift-hover);
+  --default-transition-duration: var(--duration-fast);
 
   --tracking-*: initial;
   --tracking-tight: var(--tracking-tight);
@@ -117,7 +124,10 @@ body {
   font-family: var(--font-sans);
 }
 
-:focus-visible {
-  outline: var(--size-focus-ring) solid var(--color-focus);
-  outline-offset: var(--size-focus-ring);
+/* In the base layer so a component's utilities (e.g. outline-none) can override it. */
+@layer base {
+  :focus-visible {
+    outline: var(--size-focus-ring) solid var(--color-focus);
+    outline-offset: var(--size-focus-ring);
+  }
 }

@@ -38,7 +38,7 @@ All values come from `design/tokens.css`; the rules are in `docs/STYLE_GUIDE.md`
 | 12 | `ManPage` | composite (dialog host) | Read more overlay + About `josh(1)` | `{ pages: ManPageData[] }`; native `<dialog>` + `showModal()` (D27); opens on `#man/<slug>` (D26); close → `history.replaceState` drops the hash, focus returns to the opener or, on a deep link, the `#projects` heading (D35); `aria-labelledby` points at the NAME line text (D41) | C | `--term-*`, `--shadow-dialog`, `--color-scrim`, `--font-sans` (paragraphs) |
 | 13 | `GitGraph` | composite | Experience | `{ entries: ExperienceEntry[] }` (CommitRow is a local function) | S | `--term-amber`, `--term-blue`, `--term-purple`, `--term-green`, `--term-redact`, `--term-bright`, `--term-bg` |
 | 14 | `StatusBar` | composite | tmux bar | `{ tabs: NavTab[] }`; `<nav aria-label="Site sections">`, `position: sticky; bottom: 0`; tabs ≥44px (D32); sound text is plain text (D39) | C | `--term-bg`, `--term-border`, `--term-muted`, `--term-green` |
-| 15 | `LazySection` | composite | last 4 project cards | `{ placeholder: ReactNode; rootMargin?: string; children: ReactNode }`; visual deferral only, data still ships with the page (D36) | C | `--width-card` |
+| 15 | `LazySection` | composite | last 5 project cards | `{ placeholder: ReactNode; className?: string; children: ReactNode }`; visual deferral only, data still ships with the page (D36) | C | `--width-card` |
 | 16 | `Controls` | composite | top-right cluster | none; composes 3× `TogglePill` from `useSound` and `useTheme()` (theme pill: label "Dark mode") | C | — |
 | 17 | `Section` | section | Projects, Experience, Case Studies | `{ id: string; title: string; subtitle?: string; width?: "grid" \| "narrow"; children: ReactNode }` (h2 + max-width wrapper) | S | `--color-text`, `--color-text-muted`, `--font-mono`, `--text-h2` |
 | 18 | `HireFooter` | section | `#contact` footer | `{ session: ShellConfig; copyright: string }` | C | term-* |
@@ -181,6 +181,9 @@ Content written once that the mockup holds twice: project links (card buttons + 
 - `start()` is a no-op while typing or within its cooldown. Timings come from `src/lib/motion.ts`. `onChar` per command char (key click).
 - Reduced motion: `start()` does nothing, view stays complete.
 - Timers cleared on unmount.
+
+**`useTypeOnView(ref, { cmd, lineCount, delayMs?, threshold?, once? })`** (`src/hooks/useTypewriter.ts`)
+- `useTypewriter` + `useInView` + `useSound().playKey`: types once the element scrolls into view, after `delayMs`. Used by TerminalWindow (stagger, threshold) and HireFooter (once), so neither repeats the wiring.
 
 **`useCopyEmail(): { copied: boolean; copy(): void }`** (`src/hooks/useCopyEmail.ts`)
 - `navigator.clipboard.writeText(EMAIL)`; on reject/throw → `location.href = "mailto:…"`. `copied` resets after 2.5s.
