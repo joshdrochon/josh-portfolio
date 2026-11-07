@@ -99,6 +99,11 @@
   --shadow-dialog:       0 24px 60px rgba(0, 0, 0, 0.45);
   --shadow-photo:        0 4px 12px var(--color-photo-ring);
   --shadow-cursor-hollow: inset 0 0 0 1px var(--term-dim); /* unfocused-terminal cursor outline */
+  --shadow-photo-glow:   0 0 0 2px rgba(158, 206, 106, 0.35), 0 0 28px rgba(158, 206, 106, 0.35), 0 4px 12px var(--color-photo-ring); /* hero photo CRT glow (term green) */
+
+  /* ---------- Photo CRT overlay (D70): scanlines + green vignette, cleared on hover ---------- */
+  --image-crt: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px),
+               radial-gradient(circle, transparent 55%, rgba(158, 206, 106, 0.22) 100%);
 
   /* ---------- Sizes ---------- */
   --size-touch:       44px;   /* minimum hit target */
@@ -122,6 +127,7 @@
   /* ---------- Motion ---------- */
   --duration-fast: 200ms;  /* hover lift */
   --duration-blink: 530ms; /* cursor */
+  --duration-slow: 400ms;  /* photo CRT overlay fade */
   --ease: ease;
   --lift-hover: -6px;      /* translateY on hover */
 
@@ -171,5 +177,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root { --duration-fast: 0ms; --lift-hover: 0px; }
+  :root { --duration-fast: 0ms; --duration-slow: 0ms; --lift-hover: 0px; }
 }

@@ -84,3 +84,6 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D66 | 2026-11-06 | Music is a 3-minute ElevenLabs track (same prompt) with a 3 s crossfade at the loop point, at -18.4 LUFS (old track -16.9). The old 60 s track ended in ~8 s of near-silence, which sounded broken on loop | Josh |
 | D67 | 2026-11-06 | Hero photo is the 800 px LinkedIn original (was 200 px, blurry at 288 px display) | Josh |
 | D68 | 2026-11-06 | Hero windows type on scroll-in only the first time; afterwards only hover or focus retypes them (replaces the 5 s scroll retype in D33) | Josh: scrolling up set them all off |
+| D69 | 2026-11-06 | Hero windows never type on their own: they type only while hovered or focused, pause on leave and resume where they stopped; on touch a tap acts as hover and a tap elsewhere pauses (replaces D7's scroll typing and D68) | Josh; tap = hover chosen by Josh |
+| D70 | 2026-11-06 | Hero photo gets CRT scanlines, a green vignette and glow, all cleared on hover | Josh picked "scanline glow" |
+| D71 | 2026-11-06 | Terminal surfaces (windows, cards, man page) stay dark in light mode, confirming D22 | Josh |

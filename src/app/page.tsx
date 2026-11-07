@@ -47,7 +47,9 @@ export default function Home() {
       <main>
         <section id="home" className="flex flex-col items-center px-6 pt-22 pb-4 text-center">
           <p className="mb-7 font-mono text-display leading-tight font-bold tracking-tight text-text">{hero.title}</p>
-          <Image src="/josh.jpg" alt={hero.name} width={288} height={288} priority className="size-photo rounded-round object-cover shadow-photo" />
+          <span className="photo-crt">
+            <Image src="/josh.jpg" alt={hero.name} width={288} height={288} priority className="block size-photo rounded-round object-cover" />
+          </span>
           <h1 className="mt-6 font-mono text-xl font-bold text-text">{hero.name}</h1>
           <p className="mt-2 font-mono text-sm text-text-muted">
             <span className="text-accent">$</span> {hero.prompt}
@@ -57,8 +59,8 @@ export default function Home() {
         </section>
 
         <section aria-label="Quick links" className="mx-auto grid max-w-row grid-cols-1 gap-7 px-6 pt-6 pb-18 sm:grid-cols-2 lg:grid-cols-4">
-          {windows.map((w, i) => (
-            <TerminalWindow key={w.id} config={w} index={i} />
+          {windows.map((w) => (
+            <TerminalWindow key={w.id} config={w} />
           ))}
         </section>
 

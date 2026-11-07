@@ -34,7 +34,7 @@ All values come from `design/tokens.css`; the rules are in `docs/STYLE_GUIDE.md`
 | 8 | `BigStat` | UI primitive | card header big line (10 projects + 2 cases) | `{ stat: Stat }` (see §3) handles plain, before→after, vs, redacted | Sh | `--term-green`, `--term-red`, `--term-muted`, `--term-redact` |
 | 9 | `Card` | composite | 10 project cards **and** 2 case-study cards | `{ cmd: string; stat: Stat; caption: string; tags: string[]; title: string; desc: string; actions: Action[]; headerSize?: "lg" \| "sm"; children?: ReactNode }` | S | `--term-bg`, `--term-muted`, `--color-surface`, `--color-border`, `--color-text-muted`, `--color-window-outline` |
 | 10 | `ShellSession` | composite (render only) | inside top windows **and** hire.sh footer | `{ cmd: string; lines: OutputLine[]; view: TypewriterView; trailingPrompt?: boolean; activeCursor?: boolean }` | Sh | `--term-*` via `Tone` |
-| 11 | `TerminalWindow` | composite | Projects, About Me, Contact, Resume | `{ config: TerminalWindowConfig; index: number }` (index → 250ms stagger) | C | `--shadow-window`, `--shadow-window-hover`, `--lift-hover`, `--term-*` |
+| 11 | `TerminalWindow` | composite | Projects, About Me, Contact, Resume | `{ config: TerminalWindowConfig }`; types only while hovered, focused or tapped, pausing on leave (D69) | C | `--shadow-window`, `--shadow-window-hover`, `--lift-hover`, `--term-*` |
 | 12 | `ManPage` | composite (dialog host) | Read more overlay + About `josh(1)` | `{ pages: ManPageData[] }`; native `<dialog>` + `showModal()` (D27); opens on `#man/<slug>` (D26); close → `history.replaceState` drops the hash, focus returns to the opener or, on a deep link, the `#projects` heading (D35); `aria-labelledby` points at the NAME line text (D41) | C | `--term-*`, `--shadow-dialog`, `--color-scrim`, `--font-sans` (paragraphs) |
 | 13 | `GitGraph` | composite | Experience | `{ entries: ExperienceEntry[] }` (CommitRow is a local function) | S | `--term-amber`, `--term-blue`, `--term-purple`, `--term-green`, `--term-redact`, `--term-bright`, `--term-bg` |
 | 14 | `StatusBar` | composite | tmux bar | `{ tabs: NavTab[] }`; `<nav aria-label="Site sections">`, `position: sticky; bottom: 0`; tabs ≥44px (D32); sound text is plain text (D39) | C | `--term-bg`, `--term-border`, `--term-muted`, `--term-green` |
@@ -169,13 +169,13 @@ Content written once that the mockup holds twice: project links (card buttons + 
 **`useInView(ref, opts): boolean`** (`src/hooks/useInView.ts`)
 - In: `{ threshold?: number; rootMargin?: string; once?: boolean }`.
 - Out: `true` while intersecting (or latched `true` with `once`). No `IntersectionObserver` → `true`.
-- Users: TerminalWindow (0.6), HireFooter (once), LazySection (once, `200px`). Later: Ship count-down.
+- Users: HireFooter (once), LazySection (once). Later: Ship count-down.
 
 **`useActiveSection(ids: string[], rootMargin = "-45% 0px -50% 0px"): string`** (`src/hooks/useActiveSection.ts`)
 - One observer, finds elements by `document.getElementById`, so sections need no refs. Returns the current id, default `ids[0]`.
 
 **`useTypewriter(opts): TypewriterView & { start(): void }`** (`src/hooks/useTypewriter.ts`)
-- In: `{ cmd: string; lineCount: number; onChar?: () => void }`. `start(reason: "view" | "hover")` picks the cooldown: `VIEW_COOLDOWN_MS` or `HOVER_COOLDOWN_MS`.
+- In: `{ cmd: string; lineCount: number; onChar?: () => void }`. `start(reason: "view" | "hover")` restarts from empty and picks the cooldown: `VIEW_COOLDOWN_MS` or `HOVER_COOLDOWN_MS`. `pause()` stops mid-run; `resume()` continues from where it stopped (D69).
 - Out (`TypewriterView`): `{ cmdShown: string; linesShown: number; typing: boolean; done: boolean }`.
 - First render: full text (`done: true`), so the window is never empty and never jumps.
 - `start()` is a no-op while typing or within its cooldown. Timings come from `src/lib/motion.ts`. `onChar` per command char (key click).
@@ -195,7 +195,7 @@ Content written once that the mockup holds twice: project links (card buttons + 
 - Reduced motion: no effect on sound (typing does not run, so no clicks fire).
 
 **`src/lib/motion.ts`**: the only home of JS timing constants (values from `mockup/build.py`):
-`TYPE_MIN_MS = 45`, `TYPE_MAX_MS = 120`, `LINE_TICK_MS = 55`, `TICKS_PER_LINE = 4`, `START_DELAY_MS = 120`, `STAGGER_MS = 250`, `HOVER_COOLDOWN_MS = 3000`, `VIEW_COOLDOWN_MS = 5000`, `COPY_RESET_MS = 2500`, `CLOCK_MS = 30000`, `LAZY_ROOT_MARGIN = "200px"`, `WINDOW_THRESHOLD = 0.6`, `ACTIVE_SECTION_MARGIN = "-45% 0px -50% 0px"`. CSS motion (lift, blink) is tokenized in `tokens.css` instead.
+`TYPE_MIN_MS = 45`, `TYPE_MAX_MS = 120`, `LINE_TICK_MS = 55`, `TICKS_PER_LINE = 4`, `START_DELAY_MS = 120`, `HOVER_COOLDOWN_MS = 3000`, `VIEW_COOLDOWN_MS = 5000`, `COPY_RESET_MS = 2500`, `CLOCK_MS = 30000`, `LAZY_ROOT_MARGIN = "200px"`, `ACTIVE_SECTION_MARGIN = "-45% 0px -50% 0px"`. CSS motion (lift, blink) is tokenized in `tokens.css` instead.
 
 **Theme helper (not a provider)** (`src/lib/theme.ts`)
 - `getTheme(): "light" | "dark"`, `setTheme(t)` sets `<html data-theme>` and stores the choice; `themeScript: string` is inlined in `layout.tsx` `<head>` so the first paint has the right theme (no flash). Initial value: stored choice, else `prefers-color-scheme`.

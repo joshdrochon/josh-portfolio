@@ -90,6 +90,22 @@ describe("useTypewriter", () => {
     expect(onChar).toHaveBeenCalledTimes(cmd.length);
   });
 
+  it("pause freezes mid-run and resume continues from the same point (D69)", () => {
+    vi.useFakeTimers();
+    const { result } = run(2);
+    act(() => result.current.start("hover"));
+    ticksAfter(START_DELAY_MS);
+    expect(result.current.cmdShown).toBe("l");
+    act(() => result.current.pause());
+    ticksAfter(10_000);
+    expect(result.current).toMatchObject({ cmdShown: "l", linesShown: 0, typing: true });
+    act(() => result.current.resume());
+    ticksAfter(TYPE_MAX_MS);
+    expect(result.current.cmdShown).toBe("ls");
+    ticksAfter(10_000);
+    expect(result.current).toMatchObject({ linesShown: 2, done: true });
+  });
+
   it("keeps every keystroke delay inside the jitter range", () => {
     vi.useFakeTimers();
     const spy = vi.spyOn(globalThis, "setTimeout");
