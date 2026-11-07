@@ -64,3 +64,11 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D46 | 2026-11-06 | Years aligned: resume "7+ years", cover letter "over seven years", site "7 yrs" (closes the open item in D18) | Josh |
 | D47 | 2026-11-06 | Host on Vercel at `josh-rochon.vercel.app`; buy a custom domain later if wanted | Josh |
 | D48 | 2026-11-06 | No hidden "type keyblaster" shortcut. The KeyBlaster card's Play button is the only way in. PRD §4 relabeled "proposed, not approved" | Josh: "not wanted" |
+| D49 | 2026-11-06 | Add a "This Portfolio" card with a recursion/stack-overflow joke, beside Takavay in the last row (Takavay no longer spans the full row; replaces that part of D44) | Josh |
+| D50 | 2026-11-06 | KeyBlaster is desktop only: "Desktop only" tag, and no Play link on touch devices | Josh |
+| D51 | 2026-11-06 | Typing animation is hidden from screen readers; the final text is read once | Lean, approved |
+| D52 | 2026-11-06 | Terminal-style link preview image and `>_` icon set (design/brand/) | Lean, approved |
+| D53 | 2026-11-06 | Vercel Web Analytics (cookieless) | Josh |
+| D54 | 2026-11-06 | Generate sound with ElevenLabs using the existing key from keyblaster/.env; never commit the key | Josh |
+| D55 | 2026-11-06 | Read more stays a pop-up dialog with a shareable hash link; no per-project pages | Lean, approved |
+| D56 | 2026-11-06 | Takavay copy drops "commits are landing every week" (unverified claim) | Lean, applied; Josh may veto |

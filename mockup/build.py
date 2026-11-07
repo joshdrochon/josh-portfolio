@@ -9,9 +9,9 @@ DARK = "#16161E"
 def esc(s): return html.escape(s, quote=True)
 
 # Flex-basis "albatross": 4/2/1 columns for the windows, 3/2/1 for cards, no media queries needed.
-WIN_BASIS = "max(calc(25% - 21px), min(calc(50% - 14px), calc((1100px - 100%) * 999)), min(100%, calc((560px - 100%) * 999)))"
-CARD_BASIS = "max(calc(33.333% - 22px), min(calc(50% - 16px), calc((1000px - 100%) * 999)), min(100%, calc((620px - 100%) * 999)))"
-CASE_BASIS = "max(calc(50% - 16px), min(100%, calc((620px - 100%) * 999)))"
+WIN_BASIS = "max(calc(25% - 22px), min(calc(50% - 15px), calc((1100px - 100%) * 999)), min(100%, calc((560px - 100%) * 999)))"
+CARD_BASIS = "max(calc(33.333% - 23px), min(calc(50% - 17px), calc((1000px - 100%) * 999)), min(100%, calc((620px - 100%) * 999)))"
+CASE_BASIS = "max(calc(50% - 17px), min(100%, calc((620px - 100%) * 999)))"
 
 TAG = f'<span style="font-family: {M}; font-size: 11px; color: #4B5563; border: 1px solid #D1D5DB; border-radius: 999px; padding: 4px 10px;">{{}}</span>'
 BTN = f"min-height: 44px; display: flex; align-items: center; gap: 6px; padding: 0 16px; border-radius: 999px; border: 1px solid #9CA3AF; background: #FFFFFF; color: #1F2937; text-decoration: none; font-family: {M}; font-size: 12px; cursor: pointer;"
@@ -93,7 +93,7 @@ redact = f'''<div aria-label="Redacted text" role="img" style="display: flex; fl
 
 first = (
  card("keyblaster", "$ npm test -- src/engine", "4,500+ tests", "95% coverage gate on the game engine",
-      ["TypeScript", "Phaser 3", "Claude API", "Vercel"], "KeyBlaster",
+      ["Desktop only", "TypeScript", "Phaser 3", "Claude API"], "KeyBlaster",
       "A typing game for kids in grades 2–5: fly from Earth to Pluto by typing the words on falling asteroids. Every AI-written sentence passes 7 checks before a child sees it.",
       play=("https://keyblaster.vercel.app", "Play now"), code="https://github.com/joshdrochon/keyblaster")
  + card("silentflow", "$ python eval.py --adapter josh", "", "word error rate · p = 0.014",
@@ -132,10 +132,15 @@ card("whiteout", "$ npm run serve", "No engine", "Three.js · raw GLSL · hand-w
       ["Chrome extension", "JavaScript", "Gmail API", "OAuth"], "One Ramp",
       "A Chrome extension that finds the matching receipt in Gmail for a Ramp card charge, attaches it and drafts the memo. Nothing is written to Ramp until you click. Built for my Gauntlet cohort.",
       code="https://github.com/joshdrochon/one-ramp-extension")
+ + card("portfolio", "$ open josh-rochon.vercel.app", "", "Maximum call stack size exceeded",
+      ["Next.js", "TypeScript", "Vitest", "Playwright"], "This Portfolio",
+      "You're looking at it. Built tests-first from a written PRD, with every color and spacing value a design token. Opening it from here opens it again, which opens it again, which…",
+      play=("#home", "Open it"), code="https://github.com/joshdrochon/josh-portfolio",
+      big_html='<div style="font-size: 30px; font-weight: 700; color: #F7768E;">RangeError</div>')
  + card("takavay", "$ cat takavay/README.md", "", "status: building",
       ["In progress", "Nov 2026"], "Takavay",
-      "Something new is in the works at Takavay. The details stay under wraps for now, but the commits are landing every week.",
-      readmore=False, big_html=redact, full=True,
+      "Something new is in the works at Takavay. The details stay under wraps for now.",
+      readmore=False, big_html=redact,
       body_extra=f'''          <div style="padding: 10px 12px; background: {DARK}; border-radius: 6px; font-family: {M}; font-size: 12px; line-height: 1.7; color: #C0CAF5;">
             <div>{PROMPT}ls takavay/</div>
             <div style="color: #F7768E;">ls: takavay/: Permission denied</div>
@@ -313,6 +318,19 @@ MAN = {
       "One run hit 97.9% agreement but had a single false pass, so the gate failed it. A false pass tells a trainee she's ready when she isn't, so one is too many."),
     S("STACK", "Next.js · React · Postgres (Neon) · Drizzle · Claude API · ElevenLabs · Vercel"),
     L("SEE ALSO")]),
+ "portfolio": page("josh-portfolio", "josh-portfolio — this website, which lists itself as a project", "Nov 2026 · in build",
+   [("base case", "missing"), ("call stack", "exceeded"), ("you are here", "yes")],
+   [P("DESCRIPTION",
+      "The site you're reading. It shows my projects as terminal windows and manual pages, and it's also one of the projects, so this page describes the page you're on.",
+      "It was planned before any code: a PRD, a component map, a test plan written before each component, and a style guide where every value is a design token."),
+    B("DESIGN DECISIONS",
+      "Every repeated pattern is one component fed by data. One Card renders every project card, including this one.",
+      "Lint blocks raw colors and sizes, and CI blocks duplicated code, so the codebase stays small."),
+    B("BUGS",
+      "No base case. Opening this project from this card opens this project.",
+      "The base case is you closing the tab."),
+    S("STACK", "Next.js · React · TypeScript · Tailwind · Vitest · Playwright · Vercel"),
+    L("SEE ALSO", ("code", "https://github.com/joshdrochon/josh-portfolio"), ("josh-portfolio(1)", "#man/josh-portfolio"))]),
  "whiteout": page("whiteout-ultima", "whiteout-ultima — an arcade snowboarding game in the browser", "Gauntlet AI · 2026",
    [("game engine", "none"), ("uber tricks", "6"), ("build size", "~21 MB"), ("frame-rate target", "60 fps")],
    [P("DESCRIPTION",
@@ -457,7 +475,7 @@ body{{margin:0}}
 {lazy}      </sc-if>
     </div>
     <sc-if value="{{{{ notMore }}}}" hint-placeholder-val="{{{{ false }}}}">
-      <div ref="{{{{ sentinelRef }}}}" style="margin: 32px auto 0; max-width: 380px; padding: 14px 18px; background: {DARK}; border-radius: 8px; font-family: {M}; font-size: 13px; color: #C0CAF5;">{PROMPT}loading 4 more projects<span aria-hidden="true" style="display: inline-block; width: 7px; height: 14px; margin-left: 4px; vertical-align: -2px; background: #C0CAF5;"></span></div>
+      <div ref="{{{{ sentinelRef }}}}" style="margin: 32px auto 0; max-width: 380px; padding: 14px 18px; background: {DARK}; border-radius: 8px; font-family: {M}; font-size: 13px; color: #C0CAF5;">{PROMPT}loading 5 more projects<span aria-hidden="true" style="display: inline-block; width: 7px; height: 14px; margin-left: 4px; vertical-align: -2px; background: #C0CAF5;"></span></div>
     </sc-if>
   </section>
 
@@ -489,7 +507,7 @@ body{{margin:0}}
 {man_overlay}
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{{"$preview":{{"width":1440,"height":4900}}}}'>
+<script type="text/x-dc" data-dc-script data-props='{{"$preview":{{"width":1440,"height":5600}}}}'>
 const MAN = {json.dumps(MAN, ensure_ascii=False).replace("'", "\\u0027")};
 class Component extends DCLogic {{
   constructor(props) {{
@@ -516,7 +534,7 @@ class Component extends DCLogic {{
   }}
   win() {{
     return {{
-      projects: {{ cmd: 'ls projects/', out: [['keyblaster/  silent-flow/', '#E0AF68'], ['ship/  clinical-copilot/', '#E0AF68'], ['+ 6 more', '#A9B1D6']] }},
+      projects: {{ cmd: 'ls projects/', out: [['keyblaster/  silent-flow/', '#E0AF68'], ['ship/  clinical-copilot/', '#E0AF68'], ['+ 7 more', '#A9B1D6']] }},
       about: {{ cmd: 'cat about.md', out: [['# Josh Rochon', '#7AA2F7'], ['Senior Software Engineer', '#C0CAF5'], ['Seattle · 7 years', '#A9B1D6']] }},
       contact: {{ cmd: './contact.sh', out: [['linkedin', ''], ['github', ''], ['email', '']] }},
       resume: {{ cmd: 'open resume.pdf', out: [['opening resume.pdf ...', '#9ECE6A'], ['2 pages · updated Nov 2026', '#A9B1D6']] }}

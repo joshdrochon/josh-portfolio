@@ -114,6 +114,19 @@ A modal styled as a Unix manual page, what `man ship` prints in a terminal. Engi
 - Planned: a View Transition that grows the man page out of the card header, with a plain fade under reduced motion.
 - All man-page copy is in `mockup/build.py` → `MAN`, to be ported to `src/data/projects.ts`.
 
+### 3.5a Extras approved 2026-11-06
+- **This Portfolio card** (D49): the site lists itself as a project, with a recursion joke. The header shows a red `RangeError` and "Maximum call stack size exceeded". BUGS: "No base case… The base case is you closing the tab." Its stat is a joke, not a measured number, so it is exempt from the `source` rule and marked `joke: true` in the data.
+- **KeyBlaster is desktop only** (D50): it needs a physical keyboard. The card shows a "Desktop only" tag. On touch-only devices (`(hover: none) and (pointer: coarse)`), the Play button becomes a disabled-looking note, "Needs a keyboard: play on a computer", and is not a link.
+- **Screen readers and typing** (D51): every animated terminal line is `aria-hidden`, and the finished text sits beside it in a visually hidden element, so it is read once and never letter by letter. Status changes such as "copied" use one polite `aria-live` region.
+- **Link preview and icons** (D52): files are in `design/brand/`.
+  - `og.png`, 1200×630: a terminal `whoami` with the photo and URL.
+  - `icon.svg` (`>_` prompt), `favicon-32.png`, `apple-touch-icon.png` (180), `icon-512.png`.
+  - The sources are `og.html` and `icon.svg`, rendered with headless Chrome.
+  - Wire them up through Next.js metadata (`openGraph`, `twitter: summary_large_image`, `icons`).
+- **Visitor stats** (D53): Vercel Web Analytics. It is cookieless, so there is no consent banner.
+- **Sound files** (D54): generated with ElevenLabs. The key is in `keyblaster/.env` (`ELEVENLABS_API_KEY`). Copy it into this repo's `.env.local`, which is gitignored, only while generating. Commit only the resulting audio files, never the key.
+- **Read more** stays a pop-up dialog (D55): `#man/<slug>`, full screen on phones. No separate project pages.
+
 ### 3.6 Experience (`#experience`)
 A terminal window `~/career` running `git log --graph --career`, drawn as a real graph:
 - A continuous trunk line with a dot per job.
@@ -196,7 +209,8 @@ Slugs (D43) are used everywhere: ids, `#man/<slug>`, the man title bar, `ls` out
 | 7 | **Whiteout Ultima** (lazy) | `whiteout-ultima` | `$ npm run serve` / **No engine** / Three.js · raw GLSL · hand-written physics | Play https://whiteout-ultima.pages.dev | private |
 | 8 | **LabelProof** (lazy) | `labelproof` | `$ pytest tests/accuracy` / **100%** / Tier A accuracy · 175 rows | Try https://labelproof.fly.dev · Code github.com/joshdrochon/labelproof | public |
 | 9 | **One Ramp** (lazy) | `one-ramp` | `$ attach --receipt` / **1 click** / Gmail receipt → Ramp card charge | Code github.com/joshdrochon/one-ramp-extension | public |
-| 10 | **Takavay** (lazy, last, full row) | `takavay` | `$ cat takavay/README.md` / redaction bars / status: building | none | proprietary |
+| 10 | **This Portfolio** (lazy, last row, beside Takavay) | `josh-portfolio` | `$ open josh-rochon.vercel.app` / **RangeError** (red) / Maximum call stack size exceeded | Open it → `#home` · Code github.com/joshdrochon/josh-portfolio · man page SEE ALSO links to itself | public |
+| 11 | **Takavay** (lazy, last row, beside This Portfolio) | `takavay` | `$ cat takavay/README.md` / redaction bars / status: building | none | proprietary |
 
 The About man page uses slug `josh`.
 
