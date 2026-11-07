@@ -19,9 +19,10 @@ export function globToRegExp(glob) {
   const body = glob
     .replace(/[.+^${}()|[\]\\]/g, "\\$&")
     .replace(/\*\*\//g, "\u0000")
-    .replace(/\*\*/g, ".*")
+    .replace(/\*\*/g, "\u0001")
     .replace(/\*/g, "[^/]*")
-    .replace(/\u0000/g, "(?:.*/)?");
+    .replace(/\u0000/g, "(?:.*/)?")
+    .replace(/\u0001/g, ".*");
   return new RegExp(`^${body}$`);
 }
 

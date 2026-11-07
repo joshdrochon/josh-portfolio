@@ -34,5 +34,7 @@ describe("locked-path matching", () => {
     expect(globToRegExp("src/**/*.tsx").test("src/components/ui/Tag.tsx")).toBe(true);
     expect(globToRegExp("src/*.tsx").test("src/components/Tag.tsx")).toBe(false);
     expect(matchesAny("design/tokens.css", ["docs/**", "design/tokens.css"])).toBe(true);
+    expect(globToRegExp("**").test(".github/workflows/ci.yml")).toBe(true);
+    expect(globToRegExp("docs/**").test("docs/tickets/T-001.md")).toBe(true);
   });
 });
