@@ -72,3 +72,6 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D54 | 2026-11-06 | Generate sound with ElevenLabs using the existing key from keyblaster/.env; never commit the key | Josh |
 | D55 | 2026-11-06 | Read more stays a pop-up dialog with a shareable hash link; no per-project pages | Lean, approved |
 | D56 | 2026-11-06 | Takavay copy drops "commits are landing every week" (unverified claim) | Lean, applied; Josh may veto |
+| D57 | 2026-11-06 | First-load JS budget 200 KB gzipped (measured empty-page baseline 186 KB: React 19 + Next.js runtime). The 90 KB target was unreachable on Next.js | Measured; Josh may change the number |
+| D58 | 2026-11-06 | One-offs must use a key from `design/one-offs.json`; free-text one-off comments are rejected by lint | /simplify review |
+| D59 | 2026-11-06 | Vercel Analytics renders only on Vercel (`process.env.VERCEL`), so local and CI runs have no 404 | /simplify review |

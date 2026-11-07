@@ -19,5 +19,6 @@ export default defineConfig([
     ignores: ["**/__tests__/**"],
     rules: { "max-lines": ["error", { max: 150, skipBlankLines: true, skipComments: true }] },
   },
+  { files: ["*.config.*", ".size-limit.js"], rules: { "import/no-anonymous-default-export": "off" } },
   globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "mockup/**", "design/brand/**"]),
 ]);

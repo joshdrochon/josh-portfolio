@@ -14,7 +14,8 @@ describe("lint-tokens", () => {
 
   it("accepts tokens and named one-offs", () => {
     expect(findViolations('<p className="p-4 text-text-muted rounded-card" />')).toEqual([]);
-    expect(findViolations("outline-offset: 2px; /* one-off: focus ring */")).toEqual([]);
+    expect(findViolations("letter-spacing: -1px; /* one-off: hero-tracking */")).toEqual([]);
+    expect(findViolations("outline-offset: 2px; /* one-off: I felt like it */")).not.toEqual([]);
     expect(findViolations("font-family: var(--font-sans);")).toEqual([]);
   });
 

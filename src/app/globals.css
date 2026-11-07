@@ -85,6 +85,6 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-focus); /* one-off: focus ring width */
-  outline-offset: 2px; /* one-off: focus ring offset */
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-ring);
 }

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: "/" },
   openGraph: { type: "website", url: "/", title: "Josh Rochon", description },
-  twitter: { card: "summary_large_image", title: "Josh Rochon", description },
+  twitter: { card: "summary_large_image" },
 };
 
 // Applies a saved theme before first paint so there is no flash (docs/STYLE_GUIDE.md §6).
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         {children}
-        <Analytics />
+        {process.env.VERCEL && <Analytics />}
       </body>
     </html>
   );

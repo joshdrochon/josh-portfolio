@@ -1,8 +1,8 @@
 // CI: a PR that changes a locked path must say "Unlock: <path> — approved by Josh" in its body.
-import { changedFiles, lockedGlobs, matchesAny } from "./lib.mjs";
+import { changedFiles, lockedGlobs, matcher } from "./lib.mjs";
 
 const body = process.env.PR_BODY ?? "";
-const touched = changedFiles().filter((f) => matchesAny(f, lockedGlobs()));
+const touched = changedFiles().filter(matcher(lockedGlobs()));
 const missing = touched.filter((f) => !body.includes(`Unlock: ${f}`));
 if (missing.length) {
   console.error(`Locked paths changed without an Unlock line:\n${missing.join("\n")}`);

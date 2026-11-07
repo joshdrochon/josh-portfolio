@@ -1,19 +1,23 @@
-// CI: changed files must fall inside the ticket's declared paths (docs/GUARDRAILS.md §6).
+// CI: changed files must fall inside the ticket's declared paths (docs/GUARDRAILS.md §2.4, §6).
 import { existsSync } from "node:fs";
-import { changedFiles, matchesAny, read } from "./lib.mjs";
+import { changedFiles, matcher, read } from "./lib.mjs";
+
+// Always allowed: the decision log, the ticket itself, screenshot baselines, the lockfile.
+const ALWAYS = ["docs/DECISIONS.md", "docs/tickets/*.md", "e2e/**/*-snapshots/**", "package-lock.json"];
 
 const id = (process.env.PR_TITLE ?? "").match(/^(T-\d{3})/)?.[1];
-if (!id) {
-  console.error('PR title must start with a ticket id, e.g. "T-012 Build TerminalWindow".');
-  process.exit(1);
-}
-const ticket = `docs/tickets/${id}.md`;
-if (!existsSync(ticket)) {
-  console.error(`${ticket} not found.`);
+const ticket = id && `docs/tickets/${id}.md`;
+if (!ticket || !existsSync(ticket)) {
+  console.error(`PR title must start with an existing ticket id, e.g. "T-012 Build TerminalWindow" (got "${process.env.PR_TITLE ?? ""}").`);
   process.exit(1);
 }
 const paths = JSON.parse(read(ticket).match(/^paths:\s*(\[.*\])/m)?.[1] ?? "[]");
-const outside = changedFiles().filter((f) => f !== ticket && !matchesAny(f, paths));
+if (paths.includes("**")) {
+  console.error(`${ticket} declares "**", which disables the scope check. List the real paths.`);
+  process.exit(1);
+}
+const inScope = matcher([...paths, ...ALWAYS]);
+const outside = changedFiles().filter((f) => !inScope(f));
 if (outside.length) {
   console.error(`Files outside ${id}'s declared paths:\n${outside.join("\n")}\nAdd them to the ticket or explain in the PR.`);
   process.exit(1);

@@ -1,5 +1,7 @@
 // Fails on raw style values outside design/tokens.css (docs/STYLE_GUIDE.md §1, §5).
-import { read, walk } from "./lib.mjs";
+import { read, srcFiles } from "./lib.mjs";
+
+const APPROVED = Object.keys(JSON.parse(read("design/one-offs.json"))).filter((k) => !k.startsWith("_"));
 
 const RULES = [
   [/#[0-9a-f]{3,8}\b/i, "raw hex color"],
@@ -8,11 +10,11 @@ const RULES = [
   [/font-family\s*:(?!\s*var\(--font-)/, "font-family outside tokens"],
   [/\b[\w:-]+-\[[^\]]+\]/, "arbitrary Tailwind value"],
 ];
-const ONE_OFF = "/* one-off:";
+const oneOffKey = (line) => line.match(/\/\* one-off: ([\w-]+)/)?.[1];
 
 export function findViolations(text) {
   return text.split("\n").flatMap((line, i) =>
-    line.includes(ONE_OFF) ? [] : RULES.filter(([re]) => re.test(line)).map(([, why]) => ({ line: i + 1, why, text: line.trim() })),
+    APPROVED.includes(oneOffKey(line)) ? [] : RULES.filter(([re]) => re.test(line)).map(([, why]) => ({ line: i + 1, why, text: line.trim() })),
   );
 }
 
@@ -23,12 +25,12 @@ export function darkBlocksDiffer(tokens) {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const files = walk("src").filter((f) => /\.(tsx?|css)$/.test(f) && !f.includes("__tests__"));
+  const files = srcFiles();
   const problems = files.flatMap((f) => findViolations(read(f)).map((v) => `${f}:${v.line} ${v.why}: ${v.text}`));
   if (darkBlocksDiffer(read("design/tokens.css"))) problems.push("design/tokens.css: the two dark-theme blocks differ");
   if (problems.length) {
     console.error(problems.join("\n"));
-    console.error(`\n${problems.length} token violation(s). Use a token, or mark a true one-off with /* one-off: reason */.`);
+    console.error(`\n${problems.length} token violation(s). Use a token, or use an approved one-off key from design/one-offs.json.`);
     process.exit(1);
   }
   console.log(`lint:tokens ok (${files.length} files)`);

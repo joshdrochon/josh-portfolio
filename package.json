@@ -4,12 +4,13 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.17"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:ci": "next start -p 4317",
     "lint": "eslint .",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "typecheck": "tsc --noEmit",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
+    "@lhci/cli": "^0.14.0",
     "@playwright/test": "^1.65.0",
     "@size-limit/file": "^14.3.0",
     "@tailwindcss/postcss": "^4.3.5",

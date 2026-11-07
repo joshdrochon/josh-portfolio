@@ -20,7 +20,7 @@ Read the file, `docs/COMPONENTS.md` and `docs/LOCKED.md` first. Never edit a loc
 Extend an existing component. Never make a near-copy. A new component needs a `docs/COMPONENTS.md` entry in the same PR, and CI checks this.
 
 ## 4. Styling
-Tokens only (`docs/STYLE_GUIDE.md` §1). No raw colors, sizes or fonts, and no arbitrary Tailwind values. A true one-off carries `/* one-off: reason */`.
+Tokens only (`docs/STYLE_GUIDE.md` §1). No raw colors, sizes or fonts, and no arbitrary Tailwind values. A true one-off carries `/* one-off: <key> */` with a key from `design/one-offs.json`.
 
 ## 5. Tests first
 Write the tests from `docs/TESTING.md` before the component, and see them fail.
