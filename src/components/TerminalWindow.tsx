@@ -11,7 +11,7 @@ import { Window } from "./Window";
 export function TerminalWindow({ config, index }: { config: TerminalWindowConfig; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
-  const { start, ...view } = useTypeOnView(ref, { cmd: config.cmd, lineCount: config.lines.length, delayMs: index * STAGGER_MS, threshold: WINDOW_THRESHOLD });
+  const { start, ...view } = useTypeOnView(ref, { cmd: config.cmd, lineCount: config.lines.length, delayMs: index * STAGGER_MS, threshold: WINDOW_THRESHOLD, once: true });
 
   const on = () => {
     setActive(true);

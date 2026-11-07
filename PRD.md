@@ -70,7 +70,7 @@ Four identical macOS-style terminal windows: Projects, About Me, Contact, Resume
   - Resume, `resume.pdf`: `open resume.pdf` → `opening resume.pdf ...`, `2 pages · updated Nov 2026`.
 - **Behavior:**
   - Before a window has typed, it shows its finished output, so it is never empty and never jumps.
-  - Each window **types itself when it scrolls into view** (60% visible, staggered 250ms), unless it typed in the last **5s**. Phones have no hover, so this is how they get the effect.
+  - Each window **types itself the first time it scrolls into view** (60% visible, staggered 250ms). Scrolling back past it does not retype (D68). Phones have no hover, so this is how they get the effect.
   - **On hover or keyboard focus** it retypes, unless it typed in the last **3s** or is already typing.
   - All JS timings live in `src/lib/motion.ts` (`docs/COMPONENTS.md` §4).
   - Typing speed is a human jitter of 45–120ms per character. After the command, output lines print about 4 ticks apart, then a fresh prompt with the cursor.

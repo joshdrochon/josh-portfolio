@@ -83,3 +83,4 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D65 | 2026-11-06 | Lighthouse CI uses real (devtools) throttling, not the simulated estimate. Simulated mobile LCP was 2.9 s; real Chrome on the same slow-4G + 4x CPU profile paints the LCP element (the photo) at 0.64–1.45 s. Budgets unchanged | Measured |
 | D66 | 2026-11-06 | Music is a 3-minute ElevenLabs track (same prompt) with a 3 s crossfade at the loop point, at -18.4 LUFS (old track -16.9). The old 60 s track ended in ~8 s of near-silence, which sounded broken on loop | Josh |
 | D67 | 2026-11-06 | Hero photo is the 800 px LinkedIn original (was 200 px, blurry at 288 px display) | Josh |
+| D68 | 2026-11-06 | Hero windows type on scroll-in only the first time; afterwards only hover or focus retypes them (replaces the 5 s scroll retype in D33) | Josh: scrolling up set them all off |

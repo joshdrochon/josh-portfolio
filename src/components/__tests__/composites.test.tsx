@@ -18,7 +18,7 @@ import { cardActions, manPages } from "@/lib/actions";
 import { projects } from "@/data/projects";
 import { experience } from "@/data/experience";
 import { hire, navTabs, windows } from "@/data/site";
-import { CLOCK_MS, STAGGER_MS, START_DELAY_MS } from "@/lib/motion";
+import { CLOCK_MS, STAGGER_MS, START_DELAY_MS, VIEW_COOLDOWN_MS } from "@/lib/motion";
 
 const withSound = (ui: ReactNode) => render(<SoundProvider>{ui}</SoundProvider>);
 const bySlug = (slug: string) => projects.find((p) => p.slug === slug)!;
@@ -89,6 +89,20 @@ describe("TerminalWindow", () => {
     expect(win.className).toContain("shadow-window-hover");
     fireEvent.blur(screen.getByRole("link", { name: "Projects" }));
     expect(win.className).not.toContain("shadow-window-hover");
+  });
+
+  it("types on scroll-in only once; scrolling back does not retype (D68)", () => {
+    vi.useFakeTimers();
+    const { container } = withSound(<TerminalWindow config={windows[0]} index={0} />);
+    const el = container.firstElementChild!;
+    fireLast(el);
+    act(() => vi.advanceTimersByTime(60_000));
+    expect(container).toHaveTextContent("+ 8 more");
+    fireLast(el, false);
+    act(() => vi.advanceTimersByTime(VIEW_COOLDOWN_MS + 1));
+    fireLast(el);
+    act(() => vi.advanceTimersByTime(START_DELAY_MS + 1));
+    expect(container).toHaveTextContent("+ 8 more");
   });
 
   it.each([
