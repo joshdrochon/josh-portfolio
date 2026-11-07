@@ -2,7 +2,7 @@ import type { Stat } from "@/data/types";
 
 const BARS = [[90, 140], [170, 50], [120]]; /* one-off: redaction-widths */
 
-// The one big number in a card header: plain, before → after, ours vs theirs, or redacted.
+// The one big number in a card header: plain, before → after, ours vs theirs, an error, or redacted.
 export function BigStat({ stat }: { stat: Stat }) {
   if ("redacted" in stat) {
     return (
@@ -36,5 +36,6 @@ export function BigStat({ stat }: { stat: Stat }) {
       </div>
     );
   }
+  if ("error" in stat) return <div className={`${base} text-term-red`}>{stat.error}</div>;
   return <div className={`${base} text-term-green`}>{stat.text}</div>;
 }

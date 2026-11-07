@@ -117,6 +117,7 @@
   --width-row:     1280px;  /* terminal row */
   --width-reading: 920px;   /* experience window, footer */
   --width-dialog:  860px;
+  --size-dialog-max: calc(100dvh - 96px); /* man page never taller than the screen minus its margin */
 
   /* ---------- Motion ---------- */
   --duration-fast: 200ms;  /* hover lift */

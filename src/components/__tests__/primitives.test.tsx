@@ -117,6 +117,11 @@ describe("BigStat", () => {
     expect(container).toHaveTextContent("86% vs 71.5%");
   });
 
+  it("renders an error value in red", () => {
+    render(<BigStat stat={{ error: "RangeError", source: "joke" }} />);
+    expect(screen.getByText("RangeError")).toHaveClass("text-term-red");
+  });
+
   it("renders redaction bars as one labelled image", () => {
     render(<BigStat stat={{ redacted: true, source: "n/a" }} />);
     const img = screen.getByRole("img", { name: "Redacted text" });

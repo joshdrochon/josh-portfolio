@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { themeScript } from "@/lib/theme-script";
+import { SoundProvider } from "@/providers/SoundProvider";
 
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-jetbrains" });
 const sans = Inter({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-inter" });
@@ -26,7 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        {children}
+        <SoundProvider>{children}</SoundProvider>
         {process.env.VERCEL && <Analytics />}
       </body>
     </html>

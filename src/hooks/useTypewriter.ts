@@ -1,9 +1,12 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { useSound } from "@/providers/SoundProvider";
+import { useInView } from "./useInView";
 import { useReducedMotion } from "./useReducedMotion";
 import * as M from "@/lib/motion";
 
 type Options = { cmd: string; lineCount: number; onChar?: () => void };
+export type TypewriterView = { cmdShown: string; linesShown: number; typing: boolean; done: boolean };
 
 const COOLDOWN = { view: M.VIEW_COOLDOWN_MS, hover: M.HOVER_COOLDOWN_MS };
 const jitter = () => M.TYPE_MIN_MS + Math.random() * (M.TYPE_MAX_MS - M.TYPE_MIN_MS);
@@ -48,4 +51,20 @@ export function useTypewriter({ cmd, lineCount, onChar }: Options) {
     done: !typing,
     start,
   };
+}
+
+type ViewOptions = { cmd: string; lineCount: number; delayMs?: number; threshold?: number; once?: boolean };
+
+// Types when the element scrolls into view (after `delayMs`), with a key click per character.
+export function useTypeOnView(ref: RefObject<Element | null>, { cmd, lineCount, delayMs = 0, ...inViewOptions }: ViewOptions) {
+  const { playKey } = useSound();
+  const inView = useInView(ref, inViewOptions);
+  const typewriter = useTypewriter({ cmd, lineCount, onChar: playKey });
+  const { start } = typewriter;
+  useEffect(() => {
+    if (!inView) return;
+    const t = setTimeout(() => start("view"), delayMs);
+    return () => clearTimeout(t);
+  }, [inView, delayMs, start]);
+  return typewriter;
 }

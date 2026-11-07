@@ -3,5 +3,6 @@
   "hero-tracking": "Hero title letter-spacing -1px, display size only",
   "graph-branch-curve": "Git-graph branch-off corner radii",
   "graph-dot-ring": "Ring that punches graph dots out of the trunk line",
-  "redaction-widths": "Uneven redaction bar widths"
+  "redaction-widths": "Uneven redaction bar widths",
+  "lazy-margin": "Lazy cards load 200px before they scroll into view, and also if already scrolled past (PRD §3.4, D61)"
 }

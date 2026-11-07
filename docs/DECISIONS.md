@@ -75,3 +75,8 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D57 | 2026-11-06 | First-load JS budget 200 KB gzipped (measured empty-page baseline 186 KB: React 19 + Next.js runtime). The 90 KB target was unreachable on Next.js | Measured; Josh may change the number |
 | D58 | 2026-11-06 | One-offs must use a key from `design/one-offs.json`; free-text one-off comments are rejected by lint | /simplify review |
 | D59 | 2026-11-06 | Vercel Analytics renders only on Vercel (`process.env.VERCEL`), so local and CI runs have no 404 | /simplify review |
+| D60 | 2026-11-06 | First-load JS limit raised to 220 KB: the full page measured 205.5 KB (React + Next runtime ≈186 KB, our components ≈19 KB). Applies the earlier 220 KB lean | Josh: "keep going, you don't need me" |
+| D61 | 2026-11-06 | The lazy section's observer margin reaches far above the screen, so a section already scrolled past (fast scroll, anchor jump) still loads | Found by e2e |
+| D62 | 2026-11-06 | BigStat gains an `error` (red) variant for This Portfolio's RangeError; edited a locked file | Josh: "keep going, you don't need me" |
+| D63 | 2026-11-06 | `ls projects/` shows the first 3 slugs, then "+ N more" (replaces "first 4" in D44): "clinical-copilot/" made the second line too wide for the window | Found in screenshot review |
+| D64 | 2026-11-06 | Global focus ring lives in `@layer base` so component utilities can override it (the man page body showed a stray outline) | Found in screenshot review |
