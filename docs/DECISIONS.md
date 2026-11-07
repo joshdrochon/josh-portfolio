@@ -101,3 +101,4 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D83 | 2026-11-07 | Music mutes while the tab is hidden (`visibilitychange`) and fades back in on return; key clicks unchanged | Josh: music kept playing under KeyBlaster's |
 | D84 | 2026-11-07 | About page drops HOW I WORK (read as written for one job posting) | Josh |
 | D85 | 2026-11-07 | Site moves to joshrochon.com (bought on Vercel, $12.03/yr); josh-rochon.vercel.app redirects to it (replaces D47) | Josh |
+| D86 | 2026-11-07 | Silent Flow headline is the rescored engine, 22.61% → 17.48% (no significance test for this pair, so the p-value is dropped from the card) | Josh |

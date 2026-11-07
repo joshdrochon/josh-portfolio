@@ -5,7 +5,7 @@
   "publicRepos": ["keyblaster", "ship", "labelproof", "one-ramp", "josh-portfolio"],
   "headline": {
     "keyblaster": "4,500+ tests",
-    "silent-flow": "23.3% → 18.9%",
+    "silent-flow": "22.61% → 17.48%",
     "ship": "1,276 → 103 ms",
     "clinical-copilot": "96/96 passed",
     "diagnostic-tutor": "86% vs 71.5%",
