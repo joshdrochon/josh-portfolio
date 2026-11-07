@@ -97,8 +97,13 @@
 
   --animate-blink: blink calc(var(--duration-blink) * 2) step-end infinite;
 
+  --animate-reveal: reveal var(--duration-slow) var(--ease) both;
+
   @keyframes blink {
     50% { opacity: 0; }
+  }
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(var(--lift-reveal)); }
   }
 }
 

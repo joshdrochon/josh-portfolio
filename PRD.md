@@ -45,7 +45,7 @@ Same page layout as Joan's site, re-themed as a developer's terminal.
 ## 3. Page structure (top to bottom)
 
 ### 3.1 Sound controls (top right)
-Two pill buttons, both **off by default** (browsers block autoplay anyway): `clicks: off/on` and `music: off/on`, with `aria-pressed`.
+Two pill buttons, both **on by default** (D72): `clicks: on/off` and `music: on/off`, with `aria-pressed`. Browsers block audio until the visitor clicks, taps or presses a key, so nothing loads or plays before that first interaction; then the clicks load and the music fades in. Either pill turns its sound off.
 - Clicks: a soft key click per typed character. Quiet (about 0.15 gain).
 - Music: a quiet lo-fi loop.
 - Both come from **ElevenLabs** (sound effects + music). The mockup uses browser-made stand-ins (noise-burst clicks, a 4-note chord) that must not ship.
@@ -94,7 +94,7 @@ Four identical macOS-style terminal windows: Projects, About Me, Contact, Resume
   - **Read more** for everything except Takavay. It links to `#man/<slug>`.
   - **Code** only for public repos.
   - **Model** for Diagnostic Tutor's Hugging Face page, the one link allowed for a private repo (D40).
-- **Lazy load:** the first 6 cards render immediately; the last 4 (Whiteout Ultima, LabelProof, One Ramp, Takavay) mount when the visitor scrolls within 200px of them. A `$ loading 4 more projects▮` line, computed from the list, shows until then. This is a visual deferral only; the data still ships with the page (D36).
+- **Lazy load:** the first 6 cards render immediately; the last 4 (Whiteout Ultima, LabelProof, One Ramp, Takavay) mount only when they reach the screen, then fade in (D73). A `$ loading 4 more projects▮` line, computed from the list, shows until then. This is a visual deferral only; the data still ships with the page (D36).
 - Card content is in §5.
 
 ### 3.5 Read more = man page overlay
@@ -304,7 +304,7 @@ Other repos considered and not featured: `agentforge-adversarial-platform` (the 
   - Modals close on Escape and backdrop click.
   - RTL role queries + userEvent tests.
 - **Components, hooks, data files and types:** `docs/COMPONENTS.md`. Each project is one record that feeds both its card and its man page.
-- **Audio:** pre-generated ElevenLabs files, as small compressed `.ogg`/`.mp3`, loaded only after the user turns sound on. Never autoplay.
+- **Audio:** pre-generated ElevenLabs files, as small compressed `.ogg`/`.mp3`, loaded only after the visitor's first click, tap or key press (D72). Nothing plays before that.
 - **Contact:** `contact.sh` and `hire.sh` copy-to-clipboard cover it. Joan's contact form, API route and nodemailer are dropped (D31); §7.2 is kept as a warning in case a form ever returns.
 - **Hosting:** Vercel at `josh-rochon.vercel.app` (D47). A custom domain such as joshrochon.com may be bought later; set `metadataBase` from one env var so switching is a one-line change.
 
@@ -356,7 +356,7 @@ From the code audit, measured with headless Chrome at 375/768/1024/1440px. Most 
 - [ ] Keyboard: everything reachable and operable. Visible focus. The dialog traps and returns focus.
 - [ ] WCAG AA contrast. Touch targets ≥ 44px, except text links inside terminal output (≥ 24px, D32). Reduced motion honored everywhere.
 - [ ] Meets the performance budgets in `docs/TESTING.md` §6. No layout shift from typing or lazy cards.
-- [ ] Sound off by default and never autoplays. Audio loads only after opt-in.
+- [ ] Sound on by default, but nothing loads or plays before the first click, tap or key press (D72). Each pill turns its sound off.
 - [ ] No broken links. Check every link before launch (Ship and Co-pilot demos were down).
 - [ ] The site and resume say the same things.
 - [ ] Measured, not claimed: verify behavior in the running build, not from screenshots.

@@ -68,9 +68,9 @@ export default function Home() {
           <div className="grid grid-cols-6 gap-8">
             {cards.slice(0, firstLazy)}
             <LazySection
-              className="col-span-full"
+              className="col-span-full grid grid-cols-subgrid gap-8"
               placeholder={
-                <div className="mx-auto max-w-card rounded-card bg-term px-4 py-3 font-mono text-sm text-term-text">
+                <div className="col-span-full mx-auto max-w-card rounded-card bg-term px-4 py-3 font-mono text-sm text-term-text">
                   <Prompt cursor="solid">loading {n - firstLazy} more projects</Prompt>
                 </div>
               }

@@ -195,7 +195,7 @@ Content written once that the mockup holds twice: project links (card buttons + 
 - Reduced motion: no effect on sound (typing does not run, so no clicks fire).
 
 **`src/lib/motion.ts`**: the only home of JS timing constants (values from `mockup/build.py`):
-`TYPE_MIN_MS = 45`, `TYPE_MAX_MS = 120`, `LINE_TICK_MS = 55`, `TICKS_PER_LINE = 4`, `START_DELAY_MS = 120`, `HOVER_COOLDOWN_MS = 3000`, `VIEW_COOLDOWN_MS = 5000`, `COPY_RESET_MS = 2500`, `CLOCK_MS = 30000`, `LAZY_ROOT_MARGIN = "200px"`, `ACTIVE_SECTION_MARGIN = "-45% 0px -50% 0px"`. CSS motion (lift, blink) is tokenized in `tokens.css` instead.
+`TYPE_MIN_MS = 45`, `TYPE_MAX_MS = 120`, `LINE_TICK_MS = 55`, `TICKS_PER_LINE = 4`, `START_DELAY_MS = 120`, `HOVER_COOLDOWN_MS = 3000`, `VIEW_COOLDOWN_MS = 5000`, `COPY_RESET_MS = 2500`, `CLOCK_MS = 30000`, `LAZY_ROOT_MARGIN = "10000% 0% 0%"` (load on screen, or if already scrolled past), `ACTIVE_SECTION_MARGIN = "-45% 0px -50% 0px"`. CSS motion (lift, blink) is tokenized in `tokens.css` instead.
 
 **Theme helper (not a provider)** (`src/lib/theme.ts`)
 - `getTheme(): "light" | "dark"`, `setTheme(t)` sets `<html data-theme>` and stores the choice; `themeScript: string` is inlined in `layout.tsx` `<head>` so the first paint has the right theme (no flash). Initial value: stored choice, else `prefers-color-scheme`.
