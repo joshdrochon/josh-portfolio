@@ -9,6 +9,7 @@ const RULES = [
   [/\b\d+(\.\d+)?(px|rem|em|ms)\b/, "raw size or duration"],
   [/font-family\s*:(?!\s*var\(--font-)/, "font-family outside tokens"],
   [/\b[\w:-]+-\[[^\]]+\]/, "arbitrary Tailwind value"],
+  [/(?<![\w-])(?:-?[mp][trblxy]?|gap(?:-[xy])?|[hw]|min-[hw]|max-[hw]|size|space-[xy]|inset|top|left|right|bottom)-(?!0\.5\b)\d+\.5\b/, "spacing off the 4px grid"],
 ];
 const oneOffKey = (line) => line.match(/\/\* one-off: ([\w-]+)/)?.[1];
 

@@ -10,6 +10,8 @@ describe("lint-tokens", () => {
     expect(why("padding: 14px;")).toContain("raw size or duration");
     expect(why("font-family: Inter;")).toContain("font-family outside tokens");
     expect(why('<p className="p-[14px]" />')).toContain("arbitrary Tailwind value");
+    expect(why('<p className="py-2.5 gap-1.5" />')).toContain("spacing off the 4px grid");
+    expect(why('<p className="ml-0.5 p-4" />')).toEqual([]);
   });
 
   it("accepts tokens and named one-offs", () => {

@@ -86,7 +86,7 @@ Don't use a color outside its meaning.
   - `--shadow-dialog` for the man page.
   - `--shadow-photo` for the photo.
   - Cards use a border, not a shadow.
-- **Spacing:** the 4px grid only. Tailwind's default spacing (`p-1` = 4px) is that grid, so `--space-N` and `p-N` are the same value.
+- **Spacing:** the 4px grid only. Tailwind's default spacing (`p-1` = 4px) is that grid, so `--space-N` and `p-N` are the same value. Half steps (`p-2.5`, `gap-1.5`) are off the grid and fail `lint:tokens`; only `0.5` (2px) is allowed, for hairline gaps.
   - Card body `p-5`/`p-6`.
   - Card header `p-4`/`p-5`.
   - Section bottom `pb-18`.

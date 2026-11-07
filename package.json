@@ -24,7 +24,8 @@
     "check:scope": "node scripts/check-scope.mjs",
     "check:components": "node scripts/check-components.mjs",
     "loc": "node scripts/loc.mjs",
-    "verify": "npm run lint && npm run lint:tokens && npm run typecheck && npm run test && npm run dupes && npm run unused && npm run check:components"
+    "verify": "npm run lint && npm run lint:tokens && npm run typecheck && npm run test && npm run dupes && npm run unused && npm run check:components",
+    "e2e:update": "docker run --rm --ipc=host -v \"$PWD\":/work -v pw-node-modules:/work/node_modules -v /work/.next -w /work -e SHOW_GALLERY=1 mcr.microsoft.com/playwright:v1.65.0-noble sh -c \"npm ci --no-audit --no-fund && npm run build && npx playwright test --update-snapshots\""
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

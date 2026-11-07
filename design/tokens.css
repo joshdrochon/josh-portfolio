@@ -98,6 +98,7 @@
   --shadow-window-hover: 6px 14px 32px rgba(0, 0, 0, 0.28);
   --shadow-dialog:       0 24px 60px rgba(0, 0, 0, 0.45);
   --shadow-photo:        0 4px 12px var(--color-photo-ring);
+  --shadow-cursor-hollow: inset 0 0 0 1px var(--term-dim); /* unfocused-terminal cursor outline */
 
   /* ---------- Sizes ---------- */
   --size-touch:       44px;   /* minimum hit target */
