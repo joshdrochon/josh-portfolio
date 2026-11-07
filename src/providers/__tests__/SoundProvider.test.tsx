@@ -14,35 +14,61 @@ beforeEach(() => {
   localStorage.clear();
 });
 
+const firstClick = () =>
+  act(async () => {
+    document.body.click();
+    await new Promise((r) => setTimeout(r, 0));
+  });
+
 describe("SoundProvider", () => {
-  it("starts with everything off, fetches nothing and never autoplays", () => {
+  it("starts with clicks and music on, but fetches and plays nothing before the first click or key (D72)", () => {
     const { result } = renderHook(() => useSound(), { wrapper });
-    expect(result.current).toMatchObject({ clicks: false, music: false });
+    expect(result.current).toMatchObject({ clicks: true, music: true });
     expect(fetchMock).not.toHaveBeenCalled();
     expect(audio.created).toBe(0);
     act(() => result.current.playKey());
     expect(audio.started).toBe(0);
   });
 
-  it("turning clicks on creates and resumes audio inside the click, loads samples, then plays keys", async () => {
+  it("the first click anywhere unlocks audio: resumes it, loads the clicks and starts the music", async () => {
     const { result } = renderHook(() => useSound(), { wrapper });
-    await act(async () => result.current.toggleClicks());
+    await firstClick();
     expect(audio.created).toBe(1);
     expect(audio.resumed).toBe(1);
-    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith("/audio/music.mp3");
+    expect(fetchMock).toHaveBeenCalledWith("/audio/thock.mp3");
+    expect(audio.started).toBe(1);
     act(() => result.current.playKey());
-    act(() => result.current.playKey("thock"));
     expect(audio.started).toBe(2);
     expect(localStorage.length).toBe(0);
   });
 
-  it("music starts and stops", async () => {
+  it("only the first click unlocks; later clicks start nothing new", async () => {
+    renderHook(() => useSound(), { wrapper });
+    await firstClick();
+    await firstClick();
+    expect(audio.created).toBe(1);
+    expect(audio.started).toBe(1);
+  });
+
+  it("turning music and clicks off before the first click keeps them silent", async () => {
     const { result } = renderHook(() => useSound(), { wrapper });
     await act(async () => result.current.toggleMusic());
-    expect(result.current.music).toBe(true);
-    expect(audio.started).toBe(1);
+    await act(async () => result.current.toggleClicks());
+    expect(result.current).toMatchObject({ clicks: false, music: false });
+    await firstClick();
+    act(() => result.current.playKey());
+    expect(audio.started).toBe(0);
+  });
+
+  it("music toggles off and back on", async () => {
+    const { result } = renderHook(() => useSound(), { wrapper });
+    await firstClick();
     await act(async () => result.current.toggleMusic());
     expect(result.current.music).toBe(false);
     expect(audio.stopped).toBe(1);
+    await act(async () => result.current.toggleMusic());
+    expect(result.current.music).toBe(true);
+    expect(audio.started).toBe(2);
   });
 });

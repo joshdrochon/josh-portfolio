@@ -211,7 +211,7 @@ describe("StatusBar", () => {
     const nav = screen.getByRole("navigation", { name: "Site sections" });
     expect(within(nav).getByRole("link", { name: "1:projects" })).toHaveAttribute("href", "#projects");
     expect(within(nav).getByRole("link", { name: "0:home*" })).toHaveAttribute("aria-current", "location");
-    expect(within(nav).getByText(/sound off/)).toBeInTheDocument();
+    expect(within(nav).getByText(/sound on/)).toBeInTheDocument();
     expect(within(nav).queryByRole("button")).toBeNull();
     act(() => vi.advanceTimersByTime(CLOCK_MS));
     expect(within(nav).getByText(/seattle \d{1,2}:\d{2}/i)).toBeInTheDocument();
@@ -233,8 +233,8 @@ describe("Controls", () => {
   it("wires clicks, music and theme toggles", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => ({ arrayBuffer: async () => new ArrayBuffer(8) })));
     withSound(<Controls />);
-    await userEvent.click(screen.getByRole("button", { name: "clicks: off" }));
-    expect(await screen.findByRole("button", { name: "clicks: on" })).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(screen.getByRole("button", { name: "clicks: on" }));
+    expect(await screen.findByRole("button", { name: "clicks: off" })).toHaveAttribute("aria-pressed", "false");
     await userEvent.click(screen.getByRole("button", { name: "Dark mode" }));
     expect(document.documentElement.dataset.theme).toBe("dark");
     vi.unstubAllGlobals();

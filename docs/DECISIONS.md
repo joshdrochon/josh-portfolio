@@ -87,3 +87,5 @@ Owns: every decision, reversal and the history behind them. The PRD states only 
 | D69 | 2026-11-06 | Hero windows never type on their own: they type only while hovered or focused, pause on leave and resume where they stopped; on touch a tap acts as hover and a tap elsewhere pauses (replaces D7's scroll typing and D68) | Josh; tap = hover chosen by Josh |
 | D70 | 2026-11-06 | Hero photo gets CRT scanlines, a green vignette and glow, all cleared on hover | Josh picked "scanline glow" |
 | D71 | 2026-11-06 | Terminal surfaces (windows, cards, man page) stay dark in light mode, confirming D22 | Josh |
+| D72 | 2026-11-06 | Clicks and music on by default; audio loads and starts at the visitor's first click, tap or key press, since browsers block it before then (reverses D9's "off by default") | Josh: "they are such a key to the website" |
+| D73 | 2026-11-06 | Lazy cards mount only when they reach the screen (was 200px early) and fade in | Josh |

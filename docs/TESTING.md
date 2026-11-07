@@ -71,12 +71,12 @@ Names match `docs/COMPONENTS.md`. Unit tests live in `__tests__/` next to the co
 - **useCopyEmail**
   - Same contract as CopyEmailButton, at hook level.
 - **SoundProvider / useSound**
-  - Both toggles off on every load, with nothing persisted (D38).
-  - No audio fetched until a toggle turns on (fetch mocked).
-  - Turning on resumes the AudioContext inside the click.
+  - Both toggles on at every load, with nothing persisted (D38, D72).
+  - Nothing fetched, created or played before the first click or key (fetch mocked).
+  - The first click anywhere resumes the AudioContext, loads the clicks and starts the music; later clicks start nothing new.
+  - Turning a sound off before the first click keeps it silent.
   - `playKey()` does nothing while clicks are off.
-  - Music starts, stops and fades.
-  - Never autoplays.
+  - Music stops and starts again from its pill.
 - **Theme helper** (`lib/theme.ts`)
   - Saved choice, else OS preference.
   - `setTheme` sets `data-theme` and saves it.
@@ -163,7 +163,7 @@ Run at **390 / 834 / 1440** wide, in **light and dark**.
   - The page behind can't scroll.
   - The dialog scrolls internally.
 - **Theme:** the toggle switches the theme and the choice survives a reload with no flash.
-- **Lazy cards:** they mount after scrolling, and mounting causes no layout shift (CLS 0 measured around it).
+- **Lazy cards:** they mount only once on screen and fade in (D73), and mounting causes no layout shift (CLS 0 measured around it).
 - **Status bar:** follows scroll; tabs jump to sections.
 - **Screenshot baselines:**
   - Every section and one man page.

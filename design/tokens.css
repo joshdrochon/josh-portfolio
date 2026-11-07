@@ -130,6 +130,7 @@
   --duration-slow: 400ms;  /* photo CRT overlay fade */
   --ease: ease;
   --lift-hover: -6px;      /* translateY on hover */
+  --lift-reveal: 16px;     /* lazy cards rise this far as they fade in */
 
   /* ---------- Layers ---------- */
   --z-toggles: 10;
@@ -177,5 +178,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root { --duration-fast: 0ms; --duration-slow: 0ms; --lift-hover: 0px; }
+  :root { --duration-fast: 0ms; --duration-slow: 0ms; --lift-hover: 0px; --lift-reveal: 0px; }
 }

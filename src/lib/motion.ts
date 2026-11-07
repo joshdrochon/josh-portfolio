@@ -9,5 +9,5 @@ export const VIEW_COOLDOWN_MS = 5000; // min gap before scroll-in retypes
 export const COPY_RESET_MS = 2500; // "✓ copied" shows this long
 export const CLOCK_MS = 30000; // status-bar clock refresh
 // Top margin reaches far above the screen, so a section already scrolled past (fast scroll, anchor jump) still loads.
-export const LAZY_ROOT_MARGIN = "10000% 0% 200px"; /* one-off: lazy-margin */
+export const LAZY_ROOT_MARGIN = "10000% 0% 0%"; /* one-off: lazy-margin */
 export const ACTIVE_SECTION_MARGIN = "-45% 0% -50% 0%";
