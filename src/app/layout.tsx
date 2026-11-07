@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import { themeScript } from "@/lib/theme-script";
 
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-jetbrains" });
 const sans = Inter({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-inter" });
@@ -17,9 +18,6 @@ export const metadata: Metadata = {
   openGraph: { type: "website", url: "/", title: "Josh Rochon", description },
   twitter: { card: "summary_large_image" },
 };
-
-// Applies a saved theme before first paint so there is no flash (docs/STYLE_GUIDE.md §6).
-const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

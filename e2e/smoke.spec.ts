@@ -11,3 +11,12 @@ test("home loads with no errors and no serious accessibility issues", async ({ p
   expect(violations.filter((v) => v.impact === "serious" || v.impact === "critical")).toEqual([]);
   expect(failures).toEqual([]);
 });
+
+test("a saved theme is applied before first paint (no flash)", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("theme", "dark"));
+  await page.goto("/", { waitUntil: "commit" });
+  await page.waitForFunction(() => document.body !== null);
+  expect(await page.evaluate(() => document.documentElement.dataset.theme)).toBe("dark");
+  const bg = await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor);
+  expect(bg).toBe("rgb(26, 27, 38)");
+});
