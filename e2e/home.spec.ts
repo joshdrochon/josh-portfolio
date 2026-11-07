@@ -1,12 +1,17 @@
 import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-// The status-bar clock changes every minute, so screenshots mask it.
-const clock = (page: Page) => page.locator("nav[aria-label='Site sections'] span.ml-auto");
+// The status-bar clock shows the real time, so screenshots freeze it. (A mask is not enough: its width
+// follows the text, e.g. "9:54 PM" vs "10:07 AM", so the baseline changed with the hour.)
+const FROZEN = new Date("2026-11-06T20:00:00-08:00");
+async function freeze(page: Page) {
+  await page.clock.setFixedTime(FROZEN);
+}
 
 // Reduced motion: no typing, so screenshots are stable. Scrolling to the end mounts the lazy cards.
 async function load(page: Page) {
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await freeze(page);
   await page.goto("/");
   await page.getByRole("heading", { name: "Case Studies" }).scrollIntoViewIfNeeded();
   await page.locator("footer#contact").scrollIntoViewIfNeeded();
@@ -16,7 +21,7 @@ async function load(page: Page) {
 
 test("home page matches its baseline and has no serious accessibility issues", async ({ page }) => {
   await load(page);
-  await expect(page).toHaveScreenshot("home.png", { fullPage: true, mask: [clock(page)] });
+  await expect(page).toHaveScreenshot("home.png", { fullPage: true });
   const { violations } = await new AxeBuilder({ page }).analyze();
   expect(violations.filter((v) => v.impact === "serious" || v.impact === "critical")).toEqual([]);
 });
@@ -44,9 +49,10 @@ test("every Read more opens its own man page, and q closes it", async ({ page })
 
 test("man page matches its baseline", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await freeze(page);
   await page.goto("/#man/ship");
   await expect(page.getByRole("dialog")).toBeVisible();
-  await expect(page).toHaveScreenshot("man-ship.png", { mask: [clock(page)] });
+  await expect(page).toHaveScreenshot("man-ship.png");
 });
 
 test("everything clickable shows the hand cursor (D75)", async ({ page }) => {
