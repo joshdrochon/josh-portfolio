@@ -131,6 +131,18 @@ body {
 
 /* In the base layer so a component's utilities (e.g. outline-none) can override it. */
 @layer base {
+  /* Tailwind's reset gives buttons the arrow; everything clickable gets the hand (D75). */
+  button:not(:disabled),
+  [role="button"] {
+    cursor: pointer;
+  }
+  /* Section links (#projects, status bar) glide instead of jumping (D75). */
+  html {
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
   :focus-visible {
     outline: var(--size-focus-ring) solid var(--color-focus);
     outline-offset: var(--size-focus-ring);

@@ -24,14 +24,14 @@ export function Button({ action, variant, className = "" }: Props) {
   if ("copy" in action) {
     return <CopyEmailButton label={action.label} copiedLabel={action.copiedLabel} className={cls} />;
   }
-  const external = action.href.startsWith("http");
+  const newTab = !action.href.startsWith("#"); // other sites and files (resume.pdf) open in a new tab (D74)
   const icon = action.icon && (
     <svg aria-hidden="true" viewBox="0 0 24 24" className="size-3">
       {ICONS[action.icon]}
     </svg>
   );
   return (
-    <a href={action.href} className={cls} {...(external && { target: "_blank", rel: "noopener noreferrer" })}>
+    <a href={action.href} className={cls} {...(newTab && { target: "_blank", rel: "noopener noreferrer" })}>
       {action.icon === "play" && icon}
       {action.label}
       {action.icon === "arrow" && icon}
