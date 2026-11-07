@@ -116,7 +116,7 @@
   --size-card-header: 180px;
   --size-case-header: 150px;
   --size-photo: clamp(180px, 22cqw, 288px);
-  --width-content: 1240px;  /* projects, experience, case studies */
+  --width-content: 1280px;  /* projects, experience, case studies: same as the terminal row so their edges line up (D80) */
   --width-card:    380px;   /* max card width; lazy-load placeholder width */
   --width-row:     1280px;  /* terminal row */
   --width-reading: 920px;   /* experience window, footer */

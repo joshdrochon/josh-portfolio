@@ -25,7 +25,7 @@ A personal site that gets Josh, a Seattle senior software engineer, hired for se
 
 1. Say who he is and what level he is on the first screen.
 2. Show real projects with one real, sourced number each, readable in under a minute.
-3. Let people play the games (KeyBlaster, Whiteout Ultima) in one click.
+3. Let people play KeyBlaster in one click.
 4. Link the two published Aim Consulting case studies.
 5. Tease Takavay (proprietary, in progress) without revealing anything.
 6. Show employment history.
@@ -65,7 +65,7 @@ Four identical macOS-style terminal windows: Projects, About Me, Contact, Resume
 - **Layout:** 4 across on desktop, 2×2 on tablet, 1 column on phone, with CSS grid and container queries (D29). Breakpoints, from the mockup: 2 columns below 1100px of container width, 1 column below 560px.
 - **Content** (command → output):
   - Projects, `~/projects`: `ls projects/` → the first 4 slugs in page order, two per line (`keyblaster/  silent-flow/`, `ship/  clinical-copilot/`), then `+ 6 more`. Computed from the project list, never typed (D44).
-  - About, `about.md`: `cat about.md` → `# Josh Rochon`, `Senior Software Engineer`, `Seattle · 7 years`.
+  - About, `about.md`: `cat about.md` → `# Josh Rochon`, `Senior SWE · Seattle`, `Howl's dad · snowboarder`, `retro games · light rail` (D82).
   - Contact, `contact.sh`: `./contact.sh` → `> linkedin`, `> github`, `> email` as real links and buttons.
   - Resume, `resume.pdf`: `open resume.pdf` → `opening resume.pdf ...`, `2 pages · updated Nov 2026`.
 - **Behavior:**
@@ -94,7 +94,7 @@ Four identical macOS-style terminal windows: Projects, About Me, Contact, Resume
   - **Read more** for everything except Takavay. It links to `#man/<slug>`.
   - **Code** only for public repos.
   - **Model** for Diagnostic Tutor's Hugging Face page, the one link allowed for a private repo (D40).
-- **Lazy load:** the first 6 cards render immediately; the last 4 (Whiteout Ultima, LabelProof, One Ramp, Takavay) mount only when they reach the screen, then fade in (D73). A `$ loading 4 more projects▮` line, computed from the list, shows until then. This is a visual deferral only; the data still ships with the page (D36).
+- **Lazy load:** the first 6 cards render immediately; the rest (Whiteout Ultima, LabelProof, One Ramp, This Portfolio, Takavay) mount only when they reach the screen, then fade in (D73). A `$ loading 5 more projects▮` line, computed from the list, shows until then. This is a visual deferral only; the data still ships with the page (D36).
 - Card content is in §5.
 
 ### 3.5 Read more = man page overlay
@@ -207,7 +207,7 @@ Slugs (D43) are used everywhere: ids, `#man/<slug>`, the man title bar, `ls` out
 | 4 | **Clinical Co-pilot** | `clinical-copilot` | `$ git push # runs the eval gate` / **96/96 passed** / pass/fail rubrics across 69 eval cases | none | Gauntlet GitLab only |
 | 5 | **Diagnostic Tutor** | `diagnostic-tutor` | `$ eval --arm adversarial --n 200` / **86% vs 71.5%** / held the rule vs Claude Sonnet · p < 0.001 | Try https://joshdrochon--diagnostic-tutor-ui-web.modal.run/ (200 on 2026-11-06) · Model https://huggingface.co/all-the-smiles/diagnostic-tutor-qwen3-1.7b | Gauntlet GitLab only (model public on HF) |
 | 6 | **Coach Study** | `coach-study` | `$ npm run eval:golden` / **97.9%** / grader agreement on 570 checked verdicts | none, ever (proprietary app) | private |
-| 7 | **Whiteout Ultima** (lazy) | `whiteout-ultima` | `$ npm run serve` / **No engine** / Three.js · raw GLSL · hand-written physics | Play https://whiteout-ultima.pages.dev | private |
+| 7 | **Whiteout Ultima** (lazy) | `whiteout-ultima` | `$ npm run serve` / **No engine** / Three.js · raw GLSL · hand-written physics | none (no Play link, D81) | private |
 | 8 | **LabelProof** (lazy) | `labelproof` | `$ pytest tests/accuracy` / **100%** / Tier A accuracy · 175 rows | Try https://labelproof.fly.dev · Code github.com/joshdrochon/labelproof | public |
 | 9 | **One Ramp** (lazy) | `one-ramp` | `$ attach --receipt` / **1 click** / Gmail receipt → Ramp card charge | Code github.com/joshdrochon/one-ramp-extension | public |
 | 10 | **This Portfolio** (lazy, last row, beside Takavay) | `josh-portfolio` | `$ open josh-rochon.vercel.app` / **RangeError** (red) / Maximum call stack size exceeded | Open it → `#home` · Code github.com/joshdrochon/josh-portfolio · man page SEE ALSO links to itself | public |

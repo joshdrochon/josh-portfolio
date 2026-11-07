@@ -31,7 +31,12 @@ export const windows: TerminalWindowConfig[] = [
     id: "about",
     title: "about.md",
     cmd: "cat about.md",
-    lines: [{ text: "# Josh Rochon", tone: "blue" }, { text: "Senior Software Engineer" }, { text: "Seattle · 7 years", tone: "muted" }],
+    lines: [
+      { text: "# Josh Rochon", tone: "blue" },
+      { text: "Senior SWE · Seattle" },
+      { text: "Howl's dad · snowboarder" },
+      { text: "retro games · light rail", tone: "muted" },
+    ],
     label: { label: "About Me", href: "#man/josh" },
   },
   {
