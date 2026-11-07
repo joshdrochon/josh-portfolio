@@ -8,7 +8,7 @@ import { SoundProvider } from "@/providers/SoundProvider";
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-jetbrains" });
 const sans = Inter({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-inter" });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://josh-rochon.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://joshrochon.com";
 const description = "Senior software engineer in Seattle. Projects, experience and case studies.";
 
 export const metadata: Metadata = {

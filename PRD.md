@@ -210,7 +210,7 @@ Slugs (D43) are used everywhere: ids, `#man/<slug>`, the man title bar, `ls` out
 | 7 | **Whiteout Ultima** (lazy) | `whiteout-ultima` | `$ npm run serve` / **No engine** / Three.js · raw GLSL · hand-written physics | none (no Play link, D81) | private |
 | 8 | **LabelProof** (lazy) | `labelproof` | `$ pytest tests/accuracy` / **100%** / Tier A accuracy · 175 rows | Try https://labelproof.fly.dev · Code github.com/joshdrochon/labelproof | public |
 | 9 | **One Ramp** (lazy) | `one-ramp` | `$ attach --receipt` / **1 click** / Gmail receipt → Ramp card charge | Code github.com/joshdrochon/one-ramp-extension | public |
-| 10 | **This Portfolio** (lazy, last row, beside Takavay) | `josh-portfolio` | `$ open josh-rochon.vercel.app` / **RangeError** (red) / Maximum call stack size exceeded | Open it → `#home` · Code github.com/joshdrochon/josh-portfolio · man page SEE ALSO links to itself | public |
+| 10 | **This Portfolio** (lazy, last row, beside Takavay) | `josh-portfolio` | `$ open joshrochon.com` / **RangeError** (red) / Maximum call stack size exceeded | Open it → `#home` · Code github.com/joshdrochon/josh-portfolio · man page SEE ALSO links to itself | public |
 | 11 | **Takavay** (lazy, last row, beside This Portfolio) | `takavay` | `$ cat takavay/README.md` / redaction bars / status: building | none | proprietary |
 
 The About man page uses slug `josh`.
@@ -307,7 +307,7 @@ Other repos considered and not featured: `agentforge-adversarial-platform` (the 
 - **Components, hooks, data files and types:** `docs/COMPONENTS.md`. Each project is one record that feeds both its card and its man page.
 - **Audio:** pre-generated ElevenLabs files, as small compressed `.ogg`/`.mp3`, loaded only after the visitor's first click, tap or key press (D72). Nothing plays before that.
 - **Contact:** `contact.sh` and `hire.sh` copy-to-clipboard cover it. Joan's contact form, API route and nodemailer are dropped (D31); §7.2 is kept as a warning in case a form ever returns.
-- **Hosting:** Vercel at `josh-rochon.vercel.app` (D47). A custom domain such as joshrochon.com may be bought later; set `metadataBase` from one env var so switching is a one-line change.
+- **Hosting:** Vercel at **joshrochon.com** (D85). `josh-rochon.vercel.app` redirects there, so old links keep working. `metadataBase` comes from `NEXT_PUBLIC_SITE_URL`, defaulting to the domain.
 
 ## 7. Mistakes found in Joan's code that the rebuild must not repeat
 From the code audit, measured with headless Chrome at 375/768/1024/1440px. Most serious first.

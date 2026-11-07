@@ -689,7 +689,7 @@ export const projects: Project[] = [
     "slug": "josh-portfolio",
     "title": "This Portfolio",
     "card": {
-      "cmd": "$ open josh-rochon.vercel.app",
+      "cmd": "$ open joshrochon.com",
       "stat": {
         "error": "RangeError",
         "source": "joke"
