@@ -1,0 +1,1 @@
+{ "threshold": 1, "minLines": 8, "path": ["src"], "ignore": ["**/__tests__/**"], "reporters": ["console"], "exitCode": 1 }

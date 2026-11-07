@@ -2,7 +2,7 @@
 
 Personal portfolio of Josh Rochon, senior software engineer in Seattle. It will be live at https://josh-rochon.vercel.app.
 
-The project is in the planning stage; the build hasn't started. These files make up the plan:
+Setup is done (T-001); components come next. `npm run verify` runs the local gates. These files make up the plan:
 - `PRD.md`: what the site does and why. This is the source of truth.
 - `docs/COMPONENTS.md`: the component architecture.
 - `docs/STYLE_GUIDE.md` and `design/tokens.css`: every visual value.

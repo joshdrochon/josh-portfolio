@@ -12,7 +12,7 @@ If something looks different from its siblings, that's a bug unless §4 lists it
    - in CSS files (`globals.css`);
    - in a `style` prop, only for a value computed at runtime (for example a transform driven by state).
 4. **Use the scale, don't invent.** There's no 14px space token; use `p-3` (12px) or `p-4` (16px). If neither works in several places, add a token to `design/tokens.css` in the same PR, with a comment saying where it's used.
-5. **One-offs are allowed but named.** A value used in exactly one place may be raw only on a line carrying `/* one-off: <reason> */`, and only if it's listed in §4. The lint check accepts nothing else.
+5. **One-offs are allowed but named.** A value used in exactly one place may be raw only on a line carrying `/* one-off: <key> */`, where the key is listed in `design/one-offs.json` (mirrors §4). The lint check accepts nothing else.
 6. **Semantic tokens over palette tokens.** Page parts use `--color-*`, terminal parts use `--term-*`. Theme switching depends on it.
 7. **Contrast is part of the token.** Every text/background pair below was checked at 4.5:1 or better (3:1 for the focus ring). A new pair must be checked in the PR.
 

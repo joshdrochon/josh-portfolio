@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "../../design/tokens.css";
+
+/*
+ * Tailwind theme = the design tokens, nothing else (docs/STYLE_GUIDE.md).
+ * Defaults are cleared so a non-token utility (e.g. text-gray-400) can't exist.
+ * Same-name mappings are safe: tokens.css is unlayered, so it wins over
+ * Tailwind's theme layer and light/dark switching keeps working.
+ * Spacing uses Tailwind's default step (a quarter rem), which equals the --space-* scale.
+ */
+@theme inline {
+  --color-*: initial;
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-strong: var(--color-text-strong);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-control: var(--color-control);
+  --color-accent: var(--color-accent);
+  --color-primary-bg: var(--color-primary-bg);
+  --color-primary-fg: var(--color-primary-fg);
+  --color-window-outline: var(--color-window-outline);
+  --color-focus: var(--color-focus);
+  --color-term: var(--term-bg);
+  --color-term-chrome: var(--term-chrome);
+  --color-term-border: var(--term-border);
+  --color-term-text: var(--term-text);
+  --color-term-muted: var(--term-muted);
+  --color-term-dim: var(--term-dim);
+  --color-term-faint: var(--term-faint);
+  --color-term-redact: var(--term-redact);
+  --color-term-green: var(--term-green);
+  --color-term-blue: var(--term-blue);
+  --color-term-amber: var(--term-amber);
+  --color-term-red: var(--term-red);
+  --color-term-purple: var(--term-purple);
+
+  --font-*: initial;
+  --font-mono: var(--font-mono);
+  --font-sans: var(--font-sans);
+
+  --text-*: initial;
+  --text-2xs: var(--text-2xs);
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-md: var(--text-md);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-metric: var(--text-metric);
+  --text-h2: var(--text-h2);
+  --text-display: var(--text-display);
+
+  --radius-*: initial;
+  --radius-hair: var(--radius-hair);
+  --radius-tile: var(--radius-tile);
+  --radius-card: var(--radius-card);
+  --radius-window: var(--radius-window);
+  --radius-pill: var(--radius-pill);
+  --radius-round: var(--radius-round);
+
+  --container-*: initial;
+  --container-content: var(--width-content);
+  --container-card: var(--width-card);
+  --container-row: var(--width-row);
+  --container-reading: var(--width-reading);
+  --container-dialog: var(--width-dialog);
+
+  --shadow-*: initial;
+  --shadow-window: var(--shadow-window);
+  --shadow-window-hover: var(--shadow-window-hover);
+  --shadow-dialog: var(--shadow-dialog);
+  --shadow-photo: var(--shadow-photo);
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-ring);
+}

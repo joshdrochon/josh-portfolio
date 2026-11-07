@@ -1,0 +1,5 @@
+# Advisory while Josh is the only human reviewer (docs/GUARDRAILS.md §2).
+docs/LOCKED.md  @joshdrochon
+design/tokens.css  @joshdrochon
+docs/*.md  @joshdrochon
+PRD.md  @joshdrochon

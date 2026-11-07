@@ -99,7 +99,7 @@ Ticket: T-___   PRD §___
   - **`lint:tokens`:** `scripts/lint-tokens.mjs` over `src/**/*.{ts,tsx,css}` except `design/tokens.css`. It fails on `#[0-9a-f]{3,8}\b`, `rgba?\(`, `\d+(px|rem|em|ms)\b`, `font-family`, and arbitrary utilities `\w-\[` (except lines with `/* one-off:`). It also fails if the two dark blocks in `tokens.css` differ.
   - **`.jscpd.json`:** `{ "threshold": 1, "minLines": 8, "path": ["src"], "ignore": ["**/__tests__/**"] }`.
   - **`knip.json`:** entry `src/app/**/{page,layout,not-found}.tsx`, project `src/**/*.{ts,tsx}`.
-  - **`.size-limit.json`:** `[{ "path": ".next/static/chunks/**/*.js", "limit": "90 KB", "gzip": true }]`. Tighten after the first measured build.
+  - **`.size-limit.js`:** measures only the JS the home page loads first, read from `.next/server/app/index.html`. The limit is in `docs/TESTING.md` §6.
   - **`lighthouserc.json`:** URLs `/` at mobile preset, with the assertions in `TESTING.md` §6.
   - **ESLint:** the rules in §4.
 - **CI workflow:** steps in order are install, lint, lint:tokens, tsc, test, jscpd, knip, build, size-limit, Playwright (e2e + screenshots + axe), lhci, then check-locked, check-scope and check-components. A nightly workflow runs the link checker.

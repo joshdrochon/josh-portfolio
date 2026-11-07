@@ -7,3 +7,8 @@ coverage/
 playwright-report/
 test-results/
 .vercel
+/playwright-report/
+/test-results/
+/playwright/.cache/
+.lighthouseci/
+*.tsbuildinfo
