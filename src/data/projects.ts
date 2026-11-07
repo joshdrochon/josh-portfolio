@@ -480,12 +480,7 @@ export const projects: Project[] = [
       ],
       "desc": "An arcade snowboarding game that runs in the browser: carve, grab, grind rails and land tricks. Rendering, snow shaders and physics are all written by hand."
     },
-    "links": [
-      {
-        "kind": "play",
-        "href": "https://whiteout-ultima.pages.dev"
-      }
-    ],
+    "links": [],
     "man": {
       "title": "whiteout-ultima — an arcade snowboarding game in the browser",
       "meta": "Gauntlet AI · 2026",
@@ -794,7 +789,7 @@ export const projects: Project[] = [
 ];
 
 export const aboutPage: ManPageData = {
-  "title": "josh — senior software engineer, Seattle",
+  "title": "josh — software engineer, snowboarder, retro gamer",
   "meta": "Seattle, WA · open to senior SWE roles",
   "tiles": [
     {
@@ -803,14 +798,14 @@ export const aboutPage: ManPageData = {
       "source": "resume (7+ years)"
     },
     {
-      "k": "stores on my staffing app",
-      "v": "10,000+",
-      "source": "resume"
+      "k": "Australian Shepherds",
+      "v": "1 (Howl)",
+      "source": "Josh, 2026-11-06"
     },
     {
-      "k": "legacy projects rescued",
-      "v": "22",
-      "source": "resume"
+      "k": "favorite run in WA",
+      "v": "Hogsback",
+      "source": "Josh, 2026-11-06"
     },
     {
       "k": "Gauntlet capstone",
@@ -822,22 +817,26 @@ export const aboutPage: ManPageData = {
     {
       "title": "DESCRIPTION",
       "paras": [
-        "I build and run production web apps, APIs and cloud infrastructure. Through Aim Consulting I worked as a senior engineer on client teams at Starbucks, Microsoft, BECU and Purple.",
-        "I recently completed the Gauntlet AI fellowship: a developer platform on AWS with Terraform, LLM agents gated by evals in CI, and a fine-tuned 1.7B model that beat Claude Sonnet on its target behavior, 86% to 71.5%.",
-        "I use Claude Code, Cursor and Copilot every day."
+        "I wrote my first line of code because I wanted to make my own video games. I still love games, mostly retro ones, and I still make them: KeyBlaster, up in Projects, is a typing game for kids.",
+        "These days I build and run web apps, APIs and cloud infrastructure. Through Aim Consulting I worked on teams at Starbucks, Microsoft, BECU and Purple, and I recently finished the Gauntlet AI fellowship."
+      ]
+    },
+    {
+      "title": "OFF THE CLOCK",
+      "bullets": [
+        "Dog dad to Howl, an Australian Shepherd named after Howl's Moving Castle.",
+        "Snowboarding. My favorite run in Washington is Hogsback Express at Stevens Pass.",
+        "Reading, writing and traveling.",
+        "Movies. The latest one I loved was Wildwood.",
+        "A sucker for the light rail."
       ]
     },
     {
       "title": "HOW I WORK",
       "bullets": [
         "Measure before and after, and report the lower number when a re-measure disagrees.",
-        "Gate AI work on evals in CI, the same way code is gated on tests.",
         "Mentor the next engineer and write the runbook."
       ]
-    },
-    {
-      "title": "STACK",
-      "mono": "TypeScript · React · C#/.NET · Python · PostgreSQL · AWS · Terraform"
     }
   ],
   "slug": "josh",
